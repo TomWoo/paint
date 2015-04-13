@@ -553,17 +553,6 @@ assign	LEDR			=	{	Cont[25:23],Cont[25:23],Cont[25:23],
 assign	LEDG			=	{	Cont[25:23],Cont[25:23],Cont[25:23]	};
 
 
-//	7 segment LUT
-SEG7_LUT_8 			u0	(	.oSEG0(HEX0),
-							.oSEG1(HEX1),
-							.oSEG2(HEX2),
-							.oSEG3(HEX3),
-							.oSEG4(HEX4),
-							.oSEG5(HEX5),
-							.oSEG6(HEX6),
-							.oSEG7(HEX7),
-							.iDIG(mSEG7_DIG) );
-
 //	Reset Delay Timer
 Reset_Delay			r0	(	.iCLK(CLOCK_50),.oRESET(DLY_RST)	);
 
@@ -580,33 +569,4 @@ vga_controller vga_ins(.iRST_n(DLY_RST),
                       .b_data(VGA_B),
                       .g_data(VGA_G),
                       .r_data(VGA_R));
-					
-//	Audio CODEC and video decoder setting
-I2C_AV_Config 		u3	(	//	Host Side
-							.iCLK(CLOCK_50),
-							.iRST_N(KEY[0]),
-							//	I2C Side
-							.I2C_SCLK(I2C_SCLK),
-							.I2C_SDAT(I2C_SDAT)	);
-
-AUDIO_DAC 			u4	(	//	Audio Side
-							.oAUD_BCK(AUD_BCLK),
-							.oAUD_DATA(AUD_DACDAT),
-							.oAUD_LRCK(AUD_DACLRCK),
-							//	Control Signals
-							.iSrc_Select(SW[17]),
-				         .iCLK_18_4(AUD_CTRL_CLK),
-							.iRST_N(DLY_RST)	);
-
-
-LCD_TEST 			u5	(	//	Host Side
-							.iCLK(CLOCK_50),
-							.iRST_N(DLY_RST),
-							//	LCD Side
-							.LCD_DATA(LCD_D_1),
-							.LCD_RW(LCD_RW_1),
-							.LCD_EN(LCD_EN_1),
-							.LCD_RS(LCD_RS_1)	);
-
-
 endmodule
