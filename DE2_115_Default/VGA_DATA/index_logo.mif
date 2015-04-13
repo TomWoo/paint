@@ -5,21 +5,10 @@ ADDRESS_RADIX = HEX;
 DATA_RADIX = HEX;
 
 CONTENT BEGIN
-0:ffff00;
-1:ffffff;
-2:550000;
+0:ff0000;
+1:00ff00;
+2:0000ff;
 3:ffffff;
-4:001100;
-5:ffffff;
-6:001100;
-7:ffffff;
-9:001100;
-a:ffffff;
-b:001100;
-c:ffffff;
-d:001100;
-e:ffffff;
-f:001100;
-10:ffffff;
-11:00ff00;
+4:000000;
+5:888888;
 END;

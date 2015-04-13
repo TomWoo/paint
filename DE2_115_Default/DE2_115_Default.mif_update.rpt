@@ -1,5 +1,5 @@
 MIF/HEX Update report for DE2_115_Default
-Wed Apr 08 20:54:11 2015
+Mon Apr 13 19:19:29 2015
 Quartus II 64-Bit Version 13.1.0 Build 162 10/23/2013 SJ Web Edition
 
 
@@ -35,7 +35,7 @@ applicable agreement for further details.
 +---------------------------------------------------------------+
 ; MIF/HEX Update Summary                                        ;
 +-----------------------+---------------------------------------+
-; MIF/HEX Update Status ; Successful - Wed Apr 08 20:54:11 2015 ;
+; MIF/HEX Update Status ; Successful - Mon Apr 13 19:19:29 2015 ;
 ; Revision Name         ; DE2_115_Default                       ;
 ; Top-level Entity Name ; DE2_115_Default                       ;
 ; Family                ; Cyclone IV E                          ;
@@ -48,8 +48,8 @@ applicable agreement for further details.
 +---------------------------------------------------------------------------------+
 ; File Name                                                                       ;
 +---------------------------------------------------------------------------------+
-; C:/Users/Tom/Google Drive/Duke/paint/DE2_115_Default/vga_data/img_data_logo.mif ;
-; C:/Users/Tom/Google Drive/Duke/paint/DE2_115_Default/vga_data/index_logo.mif    ;
+; C:/Users/Tom/Google Drive/Duke/paint/DE2_115_Default/VGA_DATA/img_data_logo.mif ;
+; C:/Users/Tom/Google Drive/Duke/paint/DE2_115_Default/VGA_DATA/index_logo.mif    ;
 +---------------------------------------------------------------------------------+
 
 
@@ -59,20 +59,21 @@ applicable agreement for further details.
 Info: *******************************************************************
 Info: Running Quartus II 64-Bit MIF/HEX Update
     Info: Version 13.1.0 Build 162 10/23/2013 SJ Web Edition
-    Info: Processing started: Wed Apr 08 20:54:07 2015
+    Info: Processing started: Mon Apr 13 19:19:26 2015
 Info: Command: quartus_cdb DE2_115_Default -c DE2_115_Default --update_mif
-Warning (113028): 239 out of 256 addresses are uninitialized. The Quartus II software will initialize them to "0". There are 2 warnings found, and 2 warnings are reported.
-    Warning (113026): Memory Initialization File Address 8 is not initialized
-    Warning (113027): Addresses ranging from 18 to 255 are not initialized
-Warning (113028): 65536 out of 307200 addresses are uninitialized. The Quartus II software will initialize them to "0". There are 1 warnings found, and 1 warnings are reported.
-    Warning (113027): Addresses ranging from 241664 to 307199 are not initialized
+Warning (113028): 250 out of 256 addresses are uninitialized. The Quartus II software will initialize them to "0". There are 1 warnings found, and 1 warnings are reported.
+    Warning (113027): Addresses ranging from 6 to 255 are not initialized
+Warning (113028): 108674 out of 307200 addresses are uninitialized. The Quartus II software will initialize them to "0". There are 3 warnings found, and 3 warnings are reported.
+    Warning (113027): Addresses ranging from 0 to 640 are not initialized
+    Warning (113026): Memory Initialization File Address 1279 is not initialized
+    Warning (113027): Addresses ranging from 2560 to 110591 are not initialized
 Info (39024): Processed the following Memory Initialization File(s)
-    Info (39025): Processed Memory Initialization File C:/Users/Tom/Google Drive/Duke/paint/DE2_115_Default/vga_data/img_data_logo.mif
-    Info (39025): Processed Memory Initialization File C:/Users/Tom/Google Drive/Duke/paint/DE2_115_Default/vga_data/index_logo.mif
-Info: Quartus II 64-Bit MIF/HEX Update was successful. 0 errors, 5 warnings
+    Info (39025): Processed Memory Initialization File C:/Users/Tom/Google Drive/Duke/paint/DE2_115_Default/VGA_DATA/img_data_logo.mif
+    Info (39025): Processed Memory Initialization File C:/Users/Tom/Google Drive/Duke/paint/DE2_115_Default/VGA_DATA/index_logo.mif
+Info: Quartus II 64-Bit MIF/HEX Update was successful. 0 errors, 6 warnings
     Info: Peak virtual memory: 585 megabytes
-    Info: Processing ended: Wed Apr 08 20:54:11 2015
+    Info: Processing ended: Mon Apr 13 19:19:30 2015
     Info: Elapsed time: 00:00:04
-    Info: Total CPU time (on all processors): 00:00:04
+    Info: Total CPU time (on all processors): 00:00:03
 
 

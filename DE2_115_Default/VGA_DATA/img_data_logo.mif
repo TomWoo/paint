@@ -5,8 +5,9 @@ ADDRESS_RADIX = HEX;
 DATA_RADIX = HEX;
 
 CONTENT BEGIN
-[0..ff]:11;
-[100..fff]:00;
-[1000..ffff]:01;
-[10000..3afff]:02;
+
+[0281..04fe]:02;
+[0500..009ff]:01;
+[1b000..2afff]:04;
+[2b000..4afff]:05;
 END;
