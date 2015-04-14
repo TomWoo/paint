@@ -1,46 +1,3 @@
-// ============================================================================
-// Copyright (c) 2012 by Terasic Technologies Inc.
-// ============================================================================
-//
-// Permission:
-//
-//   Terasic grants permission to use and modify this code for use
-//   in synthesis for all Terasic Development Boards and Altera Development 
-//   Kits made by Terasic.  Other use of this code, including the selling 
-//   ,duplication, or modification of any portion is strictly prohibited.
-//
-// Disclaimer:
-//
-//   This VHDL/Verilog or C/C++ source code is intended as a design reference
-//   which illustrates how these types of functions can be implemented.
-//   It is the user's responsibility to verify their design for
-//   consistency and functionality through the use of formal
-//   verification methods.  Terasic provides no warranty regarding the use 
-//   or functionality of this code.
-//
-// ============================================================================
-//           
-//  Terasic Technologies Inc
-//  9F., No.176, Sec.2, Gongdao 5th Rd, East Dist, Hsinchu City, 30070. Taiwan
-//
-//
-//
-//                     web: http://www.terasic.com/
-//                     email: support@terasic.com
-//
-// ============================================================================
-//
-// Major Functions:	DE2_115_Default
-//
-// ============================================================================
-//
-// Revision History :
-// ============================================================================
-//   Ver  :| Author              :| Mod. Date :| Changes Made:
-//   V1.1 :| HdHuang             :| 05/12/10  :| Initial Revision
-//   V2.0 :| Eko       				:| 05/23/12  :| version 11.1
-// ============================================================================
-
 module DE2_115_Default(
 
 	//////// CLOCK //////////
@@ -560,23 +517,24 @@ VGA_Audio_PLL 		p1	(	.areset(~DLY_RST),.inclk0(CLOCK2_50),.c0(VGA_CTRL_CLK),.c1(
 
 //processor here
 wire clock, reset;
-wire[23:0] color_data;
-assign color_data = debug_data[23:0];
-processor(clock, reset, ps2_key_pressed, ps2_out, lcd_write, lcd_data, debug_data, debug_addr,debug_regdst, debug_regdata,debug_inputAforwarding_execute,
+assign clock = VGA_CTRL_CLK;
+assign reset = DLY_RST;
+processor my_processor(clock, reset, ps2_key_pressed, ps2_out, lcd_write, lcd_data, debug_data, debug_addr,debug_regdst, debug_regdata,debug_inputAforwarding_execute,
 debug_inputBforwarding_execute,debug_status_execute,debug_writeToRegister_writeback, debug_writebackforward_memory,debug_aluOutput_execute, debug_multRegister_execute,debug_data_hazard_execute);
+wire[23:0] index_data;
+assign index_data = debug_data;
 
 //	VGA Controller
 //assign VGA_BLANK_N = !cDEN;
 assign VGA_CLK = VGA_CTRL_CLK;
 vga_controller vga_ins(.iRST_n(DLY_RST),
                       .iVGA_CLK(VGA_CTRL_CLK),
+							 .data_index_in(index_data),
+							 .ctrl_index_write_enable(1'b1),
                       .oBLANK_n(VGA_BLANK_N),
                       .oHS(VGA_HS),
                       .oVS(VGA_VS),
-                      /*.b_data(VGA_B),
+                      .b_data(VGA_B),
                       .g_data(VGA_G),
-                      .r_data(VGA_R));*/
-							 .b_data(color_data[23:16]),
-                      .g_data(color_data[15:8]),
-                      .r_data(color_data[7:0]));
+                      .r_data(VGA_R));
 endmodule
