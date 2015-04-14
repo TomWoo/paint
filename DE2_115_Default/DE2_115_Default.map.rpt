@@ -1,6 +1,6 @@
 Analysis & Synthesis report for DE2_115_Default
-Mon Apr 13 19:24:56 2015
-Quartus II 64-Bit Version 13.1.0 Build 162 10/23/2013 SJ Web Edition
+Mon Apr 13 20:12:06 2015
+Quartus II 64-Bit Version 14.1.0 Build 186 12/03/2014 SJ Web Edition
 
 
 ---------------------
@@ -17,55 +17,58 @@ Quartus II 64-Bit Version 13.1.0 Build 162 10/23/2013 SJ Web Edition
   9. Analysis & Synthesis IP Cores Summary
  10. Registers Removed During Synthesis
  11. General Register Statistics
- 12. Source assignments for vga_controller:vga_ins|img_data:img_data_inst|altsyncram:altsyncram_component|altsyncram_skd1:auto_generated
+ 12. Source assignments for vga_controller:vga_ins|indexRAM:img_data_inst|altsyncram:altsyncram_component|altsyncram_1hh1:auto_generated
  13. Source assignments for vga_controller:vga_ins|img_index:img_index_inst|altsyncram:altsyncram_component|altsyncram_b7d1:auto_generated
  14. Parameter Settings for User Entity Instance: VGA_Audio_PLL:p1|altpll:altpll_component
  15. Parameter Settings for User Entity Instance: vga_controller:vga_ins|video_sync_generator:LTM_ins
- 16. Parameter Settings for User Entity Instance: vga_controller:vga_ins|img_data:img_data_inst|altsyncram:altsyncram_component
+ 16. Parameter Settings for User Entity Instance: vga_controller:vga_ins|indexRAM:img_data_inst|altsyncram:altsyncram_component
  17. Parameter Settings for User Entity Instance: vga_controller:vga_ins|img_index:img_index_inst|altsyncram:altsyncram_component
  18. altpll Parameter Settings by Entity Instance
  19. altsyncram Parameter Settings by Entity Instance
- 20. Port Connectivity Checks: "VGA_Audio_PLL:p1"
- 21. Elapsed Time Per Partition
- 22. Analysis & Synthesis Messages
- 23. Analysis & Synthesis Suppressed Messages
+ 20. Port Connectivity Checks: "vga_controller:vga_ins"
+ 21. Port Connectivity Checks: "VGA_Audio_PLL:p1"
+ 22. Post-Synthesis Netlist Statistics for Top Partition
+ 23. Elapsed Time Per Partition
+ 24. Analysis & Synthesis Messages
+ 25. Analysis & Synthesis Suppressed Messages
 
 
 
 ----------------
 ; Legal Notice ;
 ----------------
-Copyright (C) 1991-2013 Altera Corporation
+Copyright (C) 1991-2014 Altera Corporation. All rights reserved.
 Your use of Altera Corporation's design tools, logic functions 
 and other software and tools, and its AMPP partner logic 
 functions, and any output files from any of the foregoing 
 (including device programming or simulation files), and any 
 associated documentation or information are expressly subject 
 to the terms and conditions of the Altera Program License 
-Subscription Agreement, Altera MegaCore Function License 
-Agreement, or other applicable license agreement, including, 
-without limitation, that your use is for the sole purpose of 
-programming logic devices manufactured by Altera and sold by 
-Altera or its authorized distributors.  Please refer to the 
-applicable agreement for further details.
+Subscription Agreement, the Altera Quartus II License Agreement,
+the Altera MegaCore Function License Agreement, or other 
+applicable license agreement, including, without limitation, 
+that your use is for the sole purpose of programming logic 
+devices manufactured by Altera and sold by Altera or its 
+authorized distributors.  Please refer to the applicable 
+agreement for further details.
 
 
 
 +---------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                    ;
 +------------------------------------+--------------------------------------------+
-; Analysis & Synthesis Status        ; Successful - Mon Apr 13 19:24:56 2015      ;
-; Quartus II 64-Bit Version          ; 13.1.0 Build 162 10/23/2013 SJ Web Edition ;
+; Analysis & Synthesis Status        ; Successful - Mon Apr 13 20:12:06 2015      ;
+; Quartus II 64-Bit Version          ; 14.1.0 Build 186 12/03/2014 SJ Web Edition ;
 ; Revision Name                      ; DE2_115_Default                            ;
 ; Top-level Entity Name              ; DE2_115_Default                            ;
 ; Family                             ; Cyclone IV E                               ;
-; Total logic elements               ; 416                                        ;
-;     Total combinational functions  ; 383                                        ;
-;     Dedicated logic registers      ; 123                                        ;
-; Total registers                    ; 123                                        ;
+; Total logic elements               ; 635                                        ;
+;     Total combinational functions  ; 596                                        ;
+;     Dedicated logic registers      ; 129                                        ;
+; Total registers                    ; 129                                        ;
 ; Total pins                         ; 480                                        ;
 ; Total virtual pins                 ; 0                                          ;
-; Total memory bits                  ; 2,463,744                                  ;
+; Total memory bits                  ; 4,200,448                                  ;
 ; Embedded Multiplier 9-bit elements ; 0                                          ;
 ; Total PLLs                         ; 1                                          ;
 +------------------------------------+--------------------------------------------+
@@ -139,7 +142,7 @@ applicable agreement for further details.
 ; Report Connectivity Checks                                                 ; On                 ; On                 ;
 ; Ignore Maximum Fan-Out Assignments                                         ; Off                ; Off                ;
 ; Synchronization Register Chain Length                                      ; 2                  ; 2                  ;
-; PowerPlay Power Optimization                                               ; Normal compilation ; Normal compilation ;
+; PowerPlay Power Optimization During Synthesis                              ; Normal compilation ; Normal compilation ;
 ; HDL message level                                                          ; Level2             ; Level2             ;
 ; Suppress Register Optimization Related Messages                            ; Off                ; Off                ;
 ; Number of Removed Registers Reported in Synthesis Report                   ; 5000               ; 5000               ;
@@ -159,57 +162,50 @@ applicable agreement for further details.
 +----------------------------------------------------------------------------+--------------------+--------------------+
 
 
-+------------------------------------------+
-; Parallel Compilation                     ;
-+----------------------------+-------------+
-; Processors                 ; Number      ;
-+----------------------------+-------------+
-; Number detected on machine ; 4           ;
-; Maximum allowed            ; 2           ;
-;                            ;             ;
-; Average used               ; 1.00        ;
-; Maximum used               ; 2           ;
-;                            ;             ;
-; Usage by Processor         ; % Time Used ;
-;     Processor 1            ; 100.0%      ;
-;     Processor 2            ; < 0.1%      ;
-;     Processors 3-4         ;   0.0%      ;
-+----------------------------+-------------+
+Parallel compilation was disabled, but you have multiple processors available. Enable parallel compilation to reduce compilation time.
++-------------------------------------+
+; Parallel Compilation                ;
++----------------------------+--------+
+; Processors                 ; Number ;
++----------------------------+--------+
+; Number detected on machine ; 8      ;
+; Maximum allowed            ; 1      ;
++----------------------------+--------+
 
 
-+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis Source Files Read                                                                                                                                                  ;
-+----------------------------------+-----------------+----------------------------------------+---------------------------------------------------------------------------------+---------+
-; File Name with User-Entered Path ; Used in Netlist ; File Type                              ; File Name with Absolute Path                                                    ; Library ;
-+----------------------------------+-----------------+----------------------------------------+---------------------------------------------------------------------------------+---------+
-; V/video_sync_generator.v         ; yes             ; User Verilog HDL File                  ; C:/Users/Tom/Google Drive/Duke/paint/DE2_115_Default/V/video_sync_generator.v   ;         ;
-; V/vga_controller.v               ; yes             ; User Verilog HDL File                  ; C:/Users/Tom/Google Drive/Duke/paint/DE2_115_Default/V/vga_controller.v         ;         ;
-; V/VGA_Audio_PLL.v                ; yes             ; User Wizard-Generated File             ; C:/Users/Tom/Google Drive/Duke/paint/DE2_115_Default/V/VGA_Audio_PLL.v          ;         ;
-; V/Reset_Delay.v                  ; yes             ; User Verilog HDL File                  ; C:/Users/Tom/Google Drive/Duke/paint/DE2_115_Default/V/Reset_Delay.v            ;         ;
-; V/img_index.v                    ; yes             ; User Wizard-Generated File             ; C:/Users/Tom/Google Drive/Duke/paint/DE2_115_Default/V/img_index.v              ;         ;
-; V/img_data.v                     ; yes             ; User Wizard-Generated File             ; C:/Users/Tom/Google Drive/Duke/paint/DE2_115_Default/V/img_data.v               ;         ;
-; DE2_115_Default.v                ; yes             ; User Verilog HDL File                  ; C:/Users/Tom/Google Drive/Duke/paint/DE2_115_Default/DE2_115_Default.v          ;         ;
-; altpll.tdf                       ; yes             ; Megafunction                           ; c:/altera/13.1/quartus/libraries/megafunctions/altpll.tdf                       ;         ;
-; aglobal131.inc                   ; yes             ; Megafunction                           ; c:/altera/13.1/quartus/libraries/megafunctions/aglobal131.inc                   ;         ;
-; stratix_pll.inc                  ; yes             ; Megafunction                           ; c:/altera/13.1/quartus/libraries/megafunctions/stratix_pll.inc                  ;         ;
-; stratixii_pll.inc                ; yes             ; Megafunction                           ; c:/altera/13.1/quartus/libraries/megafunctions/stratixii_pll.inc                ;         ;
-; cycloneii_pll.inc                ; yes             ; Megafunction                           ; c:/altera/13.1/quartus/libraries/megafunctions/cycloneii_pll.inc                ;         ;
-; db/altpll_k3n2.tdf               ; yes             ; Auto-Generated Megafunction            ; C:/Users/Tom/Google Drive/Duke/paint/DE2_115_Default/db/altpll_k3n2.tdf         ;         ;
-; altsyncram.tdf                   ; yes             ; Megafunction                           ; c:/altera/13.1/quartus/libraries/megafunctions/altsyncram.tdf                   ;         ;
-; stratix_ram_block.inc            ; yes             ; Megafunction                           ; c:/altera/13.1/quartus/libraries/megafunctions/stratix_ram_block.inc            ;         ;
-; lpm_mux.inc                      ; yes             ; Megafunction                           ; c:/altera/13.1/quartus/libraries/megafunctions/lpm_mux.inc                      ;         ;
-; lpm_decode.inc                   ; yes             ; Megafunction                           ; c:/altera/13.1/quartus/libraries/megafunctions/lpm_decode.inc                   ;         ;
-; a_rdenreg.inc                    ; yes             ; Megafunction                           ; c:/altera/13.1/quartus/libraries/megafunctions/a_rdenreg.inc                    ;         ;
-; altrom.inc                       ; yes             ; Megafunction                           ; c:/altera/13.1/quartus/libraries/megafunctions/altrom.inc                       ;         ;
-; altram.inc                       ; yes             ; Megafunction                           ; c:/altera/13.1/quartus/libraries/megafunctions/altram.inc                       ;         ;
-; altdpram.inc                     ; yes             ; Megafunction                           ; c:/altera/13.1/quartus/libraries/megafunctions/altdpram.inc                     ;         ;
-; db/altsyncram_skd1.tdf           ; yes             ; Auto-Generated Megafunction            ; C:/Users/Tom/Google Drive/Duke/paint/DE2_115_Default/db/altsyncram_skd1.tdf     ;         ;
-; ./VGA_DATA/img_data_logo.mif     ; yes             ; Auto-Found Memory Initialization File  ; C:/Users/Tom/Google Drive/Duke/paint/DE2_115_Default/VGA_DATA/img_data_logo.mif ;         ;
-; db/decode_aaa.tdf                ; yes             ; Auto-Generated Megafunction            ; C:/Users/Tom/Google Drive/Duke/paint/DE2_115_Default/db/decode_aaa.tdf          ;         ;
-; db/mux_1pb.tdf                   ; yes             ; Auto-Generated Megafunction            ; C:/Users/Tom/Google Drive/Duke/paint/DE2_115_Default/db/mux_1pb.tdf             ;         ;
-; db/altsyncram_b7d1.tdf           ; yes             ; Auto-Generated Megafunction            ; C:/Users/Tom/Google Drive/Duke/paint/DE2_115_Default/db/altsyncram_b7d1.tdf     ;         ;
-; ./VGA_DATA/index_logo.mif        ; yes             ; Auto-Found Memory Initialization File  ; C:/Users/Tom/Google Drive/Duke/paint/DE2_115_Default/VGA_DATA/index_logo.mif    ;         ;
-+----------------------------------+-----------------+----------------------------------------+---------------------------------------------------------------------------------+---------+
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Source Files Read                                                                                                                                                                              ;
++----------------------------------+-----------------+----------------------------------------+-------------------------------------------------------------------------------------------------------------+---------+
+; File Name with User-Entered Path ; Used in Netlist ; File Type                              ; File Name with Absolute Path                                                                                ; Library ;
++----------------------------------+-----------------+----------------------------------------+-------------------------------------------------------------------------------------------------------------+---------+
+; V/video_sync_generator.v         ; yes             ; User Verilog HDL File                  ; /home/zach/bears.zachary@gmail.com/Duke/S15/ECE350L/Homework/paint/DE2_115_Default/V/video_sync_generator.v ;         ;
+; V/vga_controller.v               ; yes             ; User Verilog HDL File                  ; /home/zach/bears.zachary@gmail.com/Duke/S15/ECE350L/Homework/paint/DE2_115_Default/V/vga_controller.v       ;         ;
+; V/VGA_Audio_PLL.v                ; yes             ; User Wizard-Generated File             ; /home/zach/bears.zachary@gmail.com/Duke/S15/ECE350L/Homework/paint/DE2_115_Default/V/VGA_Audio_PLL.v        ;         ;
+; V/Reset_Delay.v                  ; yes             ; User Verilog HDL File                  ; /home/zach/bears.zachary@gmail.com/Duke/S15/ECE350L/Homework/paint/DE2_115_Default/V/Reset_Delay.v          ;         ;
+; V/img_index.v                    ; yes             ; User Wizard-Generated File             ; /home/zach/bears.zachary@gmail.com/Duke/S15/ECE350L/Homework/paint/DE2_115_Default/V/img_index.v            ;         ;
+; DE2_115_Default.v                ; yes             ; User Verilog HDL File                  ; /home/zach/bears.zachary@gmail.com/Duke/S15/ECE350L/Homework/paint/DE2_115_Default/DE2_115_Default.v        ;         ;
+; indexRAM.v                       ; yes             ; User Wizard-Generated File             ; /home/zach/bears.zachary@gmail.com/Duke/S15/ECE350L/Homework/paint/DE2_115_Default/indexRAM.v               ;         ;
+; altpll.tdf                       ; yes             ; Megafunction                           ; /home/zach/altera/14.1/quartus/libraries/megafunctions/altpll.tdf                                           ;         ;
+; aglobal141.inc                   ; yes             ; Megafunction                           ; /home/zach/altera/14.1/quartus/libraries/megafunctions/aglobal141.inc                                       ;         ;
+; stratix_pll.inc                  ; yes             ; Megafunction                           ; /home/zach/altera/14.1/quartus/libraries/megafunctions/stratix_pll.inc                                      ;         ;
+; stratixii_pll.inc                ; yes             ; Megafunction                           ; /home/zach/altera/14.1/quartus/libraries/megafunctions/stratixii_pll.inc                                    ;         ;
+; cycloneii_pll.inc                ; yes             ; Megafunction                           ; /home/zach/altera/14.1/quartus/libraries/megafunctions/cycloneii_pll.inc                                    ;         ;
+; db/altpll_k3n2.tdf               ; yes             ; Auto-Generated Megafunction            ; /home/zach/bears.zachary@gmail.com/Duke/S15/ECE350L/Homework/paint/DE2_115_Default/db/altpll_k3n2.tdf       ;         ;
+; altsyncram.tdf                   ; yes             ; Megafunction                           ; /home/zach/altera/14.1/quartus/libraries/megafunctions/altsyncram.tdf                                       ;         ;
+; stratix_ram_block.inc            ; yes             ; Megafunction                           ; /home/zach/altera/14.1/quartus/libraries/megafunctions/stratix_ram_block.inc                                ;         ;
+; lpm_mux.inc                      ; yes             ; Megafunction                           ; /home/zach/altera/14.1/quartus/libraries/megafunctions/lpm_mux.inc                                          ;         ;
+; lpm_decode.inc                   ; yes             ; Megafunction                           ; /home/zach/altera/14.1/quartus/libraries/megafunctions/lpm_decode.inc                                       ;         ;
+; a_rdenreg.inc                    ; yes             ; Megafunction                           ; /home/zach/altera/14.1/quartus/libraries/megafunctions/a_rdenreg.inc                                        ;         ;
+; altrom.inc                       ; yes             ; Megafunction                           ; /home/zach/altera/14.1/quartus/libraries/megafunctions/altrom.inc                                           ;         ;
+; altram.inc                       ; yes             ; Megafunction                           ; /home/zach/altera/14.1/quartus/libraries/megafunctions/altram.inc                                           ;         ;
+; altdpram.inc                     ; yes             ; Megafunction                           ; /home/zach/altera/14.1/quartus/libraries/megafunctions/altdpram.inc                                         ;         ;
+; db/altsyncram_1hh1.tdf           ; yes             ; Auto-Generated Megafunction            ; /home/zach/bears.zachary@gmail.com/Duke/S15/ECE350L/Homework/paint/DE2_115_Default/db/altsyncram_1hh1.tdf   ;         ;
+; db/decode_gua.tdf                ; yes             ; Auto-Generated Megafunction            ; /home/zach/bears.zachary@gmail.com/Duke/S15/ECE350L/Homework/paint/DE2_115_Default/db/decode_gua.tdf        ;         ;
+; db/decode_9aa.tdf                ; yes             ; Auto-Generated Megafunction            ; /home/zach/bears.zachary@gmail.com/Duke/S15/ECE350L/Homework/paint/DE2_115_Default/db/decode_9aa.tdf        ;         ;
+; db/mux_0pb.tdf                   ; yes             ; Auto-Generated Megafunction            ; /home/zach/bears.zachary@gmail.com/Duke/S15/ECE350L/Homework/paint/DE2_115_Default/db/mux_0pb.tdf           ;         ;
+; db/altsyncram_b7d1.tdf           ; yes             ; Auto-Generated Megafunction            ; /home/zach/bears.zachary@gmail.com/Duke/S15/ECE350L/Homework/paint/DE2_115_Default/db/altsyncram_b7d1.tdf   ;         ;
+; VGA_DATA/index_logo.mif          ; yes             ; Auto-Found Memory Initialization File  ; /home/zach/bears.zachary@gmail.com/Duke/S15/ECE350L/Homework/paint/DE2_115_Default/VGA_DATA/index_logo.mif  ;         ;
++----------------------------------+-----------------+----------------------------------------+-------------------------------------------------------------------------------------------------------------+---------+
 
 
 +--------------------------------------------------------------------------------------------------------------------------+
@@ -217,32 +213,34 @@ applicable agreement for further details.
 +---------------------------------------------+----------------------------------------------------------------------------+
 ; Resource                                    ; Usage                                                                      ;
 +---------------------------------------------+----------------------------------------------------------------------------+
-; Estimated Total logic elements              ; 416                                                                        ;
+; Estimated Total logic elements              ; 635                                                                        ;
 ;                                             ;                                                                            ;
-; Total combinational functions               ; 383                                                                        ;
+; Total combinational functions               ; 596                                                                        ;
 ; Logic element usage by number of LUT inputs ;                                                                            ;
-;     -- 4 input functions                    ; 258                                                                        ;
-;     -- 3 input functions                    ; 36                                                                         ;
-;     -- <=2 input functions                  ; 89                                                                         ;
+;     -- 4 input functions                    ; 450                                                                        ;
+;     -- 3 input functions                    ; 56                                                                         ;
+;     -- <=2 input functions                  ; 90                                                                         ;
 ;                                             ;                                                                            ;
 ; Logic elements by mode                      ;                                                                            ;
-;     -- normal mode                          ; 304                                                                        ;
+;     -- normal mode                          ; 517                                                                        ;
 ;     -- arithmetic mode                      ; 79                                                                         ;
 ;                                             ;                                                                            ;
-; Total registers                             ; 123                                                                        ;
-;     -- Dedicated logic registers            ; 123                                                                        ;
+; Total registers                             ; 129                                                                        ;
+;     -- Dedicated logic registers            ; 129                                                                        ;
 ;     -- I/O registers                        ; 0                                                                          ;
 ;                                             ;                                                                            ;
 ; I/O pins                                    ; 480                                                                        ;
-; Total memory bits                           ; 2463744                                                                    ;
+; Total memory bits                           ; 4200448                                                                    ;
+;                                             ;                                                                            ;
 ; Embedded Multiplier 9-bit elements          ; 0                                                                          ;
+;                                             ;                                                                            ;
 ; Total PLLs                                  ; 1                                                                          ;
 ;     -- PLLs                                 ; 1                                                                          ;
 ;                                             ;                                                                            ;
 ; Maximum fan-out node                        ; VGA_Audio_PLL:p1|altpll:altpll_component|altpll_k3n2:auto_generated|clk[0] ;
-; Maximum fan-out                             ; 407                                                                        ;
-; Total fan-out                               ; 7122                                                                       ;
-; Average fan-out                             ; 3.68                                                                       ;
+; Maximum fan-out                             ; 621                                                                        ;
+; Total fan-out                               ; 11602                                                                      ;
+; Average fan-out                             ; 4.91                                                                       ;
 +---------------------------------------------+----------------------------------------------------------------------------+
 
 
@@ -251,44 +249,42 @@ applicable agreement for further details.
 +----------------------------------------------+-------------------+--------------+-------------+--------------+---------+-----------+------+--------------+------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+
 ; Compilation Hierarchy Node                   ; LC Combinationals ; LC Registers ; Memory Bits ; DSP Elements ; DSP 9x9 ; DSP 18x18 ; Pins ; Virtual Pins ; Full Hierarchy Name                                                                                                                                  ; Library Name ;
 +----------------------------------------------+-------------------+--------------+-------------+--------------+---------+-----------+------+--------------+------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+
-; |DE2_115_Default                             ; 383 (26)          ; 123 (26)     ; 2463744     ; 0            ; 0       ; 0         ; 480  ; 0            ; |DE2_115_Default                                                                                                                                     ; work         ;
+; |DE2_115_Default                             ; 596 (27)          ; 129 (26)     ; 4200448     ; 0            ; 0       ; 0         ; 480  ; 0            ; |DE2_115_Default                                                                                                                                     ; work         ;
 ;    |Reset_Delay:r0|                          ; 27 (27)           ; 21 (21)      ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE2_115_Default|Reset_Delay:r0                                                                                                                      ; work         ;
 ;    |VGA_Audio_PLL:p1|                        ; 0 (0)             ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE2_115_Default|VGA_Audio_PLL:p1                                                                                                                    ; work         ;
 ;       |altpll:altpll_component|              ; 0 (0)             ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE2_115_Default|VGA_Audio_PLL:p1|altpll:altpll_component                                                                                            ; work         ;
 ;          |altpll_k3n2:auto_generated|        ; 0 (0)             ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE2_115_Default|VGA_Audio_PLL:p1|altpll:altpll_component|altpll_k3n2:auto_generated                                                                 ; work         ;
-;    |vga_controller:vga_ins|                  ; 330 (20)          ; 76 (46)      ; 2463744     ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE2_115_Default|vga_controller:vga_ins                                                                                                              ; work         ;
-;       |img_data:img_data_inst|               ; 266 (0)           ; 6 (0)        ; 2457600     ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE2_115_Default|vga_controller:vga_ins|img_data:img_data_inst                                                                                       ; work         ;
-;          |altsyncram:altsyncram_component|   ; 266 (0)           ; 6 (0)        ; 2457600     ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE2_115_Default|vga_controller:vga_ins|img_data:img_data_inst|altsyncram:altsyncram_component                                                       ; work         ;
-;             |altsyncram_skd1:auto_generated| ; 266 (0)           ; 6 (6)        ; 2457600     ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE2_115_Default|vga_controller:vga_ins|img_data:img_data_inst|altsyncram:altsyncram_component|altsyncram_skd1:auto_generated                        ; work         ;
-;                |decode_aaa:rden_decode|      ; 44 (44)           ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE2_115_Default|vga_controller:vga_ins|img_data:img_data_inst|altsyncram:altsyncram_component|altsyncram_skd1:auto_generated|decode_aaa:rden_decode ; work         ;
-;                |mux_1pb:mux2|                ; 222 (222)         ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE2_115_Default|vga_controller:vga_ins|img_data:img_data_inst|altsyncram:altsyncram_component|altsyncram_skd1:auto_generated|mux_1pb:mux2           ; work         ;
+;    |vga_controller:vga_ins|                  ; 542 (20)          ; 82 (46)      ; 4200448     ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE2_115_Default|vga_controller:vga_ins                                                                                                              ; work         ;
 ;       |img_index:img_index_inst|             ; 0 (0)             ; 0 (0)        ; 6144        ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE2_115_Default|vga_controller:vga_ins|img_index:img_index_inst                                                                                     ; work         ;
 ;          |altsyncram:altsyncram_component|   ; 0 (0)             ; 0 (0)        ; 6144        ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE2_115_Default|vga_controller:vga_ins|img_index:img_index_inst|altsyncram:altsyncram_component                                                     ; work         ;
 ;             |altsyncram_b7d1:auto_generated| ; 0 (0)             ; 0 (0)        ; 6144        ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE2_115_Default|vga_controller:vga_ins|img_index:img_index_inst|altsyncram:altsyncram_component|altsyncram_b7d1:auto_generated                      ; work         ;
+;       |indexRAM:img_data_inst|               ; 478 (0)           ; 12 (0)       ; 4194304     ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE2_115_Default|vga_controller:vga_ins|indexRAM:img_data_inst                                                                                       ; work         ;
+;          |altsyncram:altsyncram_component|   ; 478 (0)           ; 12 (0)       ; 4194304     ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE2_115_Default|vga_controller:vga_ins|indexRAM:img_data_inst|altsyncram:altsyncram_component                                                       ; work         ;
+;             |altsyncram_1hh1:auto_generated| ; 478 (0)           ; 12 (12)      ; 4194304     ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE2_115_Default|vga_controller:vga_ins|indexRAM:img_data_inst|altsyncram:altsyncram_component|altsyncram_1hh1:auto_generated                        ; work         ;
+;                |decode_9aa:rden_decode|      ; 73 (73)           ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE2_115_Default|vga_controller:vga_ins|indexRAM:img_data_inst|altsyncram:altsyncram_component|altsyncram_1hh1:auto_generated|decode_9aa:rden_decode ; work         ;
+;                |mux_0pb:mux2|                ; 405 (405)         ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE2_115_Default|vga_controller:vga_ins|indexRAM:img_data_inst|altsyncram:altsyncram_component|altsyncram_1hh1:auto_generated|mux_0pb:mux2           ; work         ;
 ;       |video_sync_generator:LTM_ins|         ; 44 (44)           ; 24 (24)      ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE2_115_Default|vga_controller:vga_ins|video_sync_generator:LTM_ins                                                                                 ; work         ;
 +----------------------------------------------+-------------------+--------------+-------------+--------------+---------+-----------+------+--------------+------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+
 Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
 
 
-+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis RAM Summary                                                                                                                                                                                                             ;
-+---------------------------------------------------------------------------------------------------------------------------+------+------+--------------+--------------+--------------+--------------+---------+------------------------------+
-; Name                                                                                                                      ; Type ; Mode ; Port A Depth ; Port A Width ; Port B Depth ; Port B Width ; Size    ; MIF                          ;
-+---------------------------------------------------------------------------------------------------------------------------+------+------+--------------+--------------+--------------+--------------+---------+------------------------------+
-; vga_controller:vga_ins|img_data:img_data_inst|altsyncram:altsyncram_component|altsyncram_skd1:auto_generated|ALTSYNCRAM   ; M9K  ; ROM  ; 307200       ; 8            ; --           ; --           ; 2457600 ; ./VGA_DATA/img_data_logo.mif ;
-; vga_controller:vga_ins|img_index:img_index_inst|altsyncram:altsyncram_component|altsyncram_b7d1:auto_generated|ALTSYNCRAM ; M9K  ; ROM  ; 256          ; 24           ; --           ; --           ; 6144    ; ./VGA_DATA/index_logo.mif    ;
-+---------------------------------------------------------------------------------------------------------------------------+------+------+--------------+--------------+--------------+--------------+---------+------------------------------+
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis RAM Summary                                                                                                                                                                                                                 ;
++---------------------------------------------------------------------------------------------------------------------------+------+-------------+--------------+--------------+--------------+--------------+---------+---------------------------+
+; Name                                                                                                                      ; Type ; Mode        ; Port A Depth ; Port A Width ; Port B Depth ; Port B Width ; Size    ; MIF                       ;
++---------------------------------------------------------------------------------------------------------------------------+------+-------------+--------------+--------------+--------------+--------------+---------+---------------------------+
+; vga_controller:vga_ins|img_index:img_index_inst|altsyncram:altsyncram_component|altsyncram_b7d1:auto_generated|ALTSYNCRAM ; M9K  ; ROM         ; 256          ; 24           ; --           ; --           ; 6144    ; ./VGA_DATA/index_logo.mif ;
+; vga_controller:vga_ins|indexRAM:img_data_inst|altsyncram:altsyncram_component|altsyncram_1hh1:auto_generated|ALTSYNCRAM   ; M9K  ; Single Port ; 524288       ; 8            ; --           ; --           ; 4194304 ; None                      ;
++---------------------------------------------------------------------------------------------------------------------------+------+-------------+--------------+--------------+--------------+--------------+---------+---------------------------+
 
 
-+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis IP Cores Summary                                                                                                                                                                     ;
-+--------+--------------+---------+--------------+--------------+------------------------------------------------------------------+------------------------------------------------------------------------+
-; Vendor ; IP Core Name ; Version ; Release Date ; License Type ; Entity Instance                                                  ; IP Include File                                                        ;
-+--------+--------------+---------+--------------+--------------+------------------------------------------------------------------+------------------------------------------------------------------------+
-; Altera ; ALTPLL       ; N/A     ; N/A          ; N/A          ; |DE2_115_Default|VGA_Audio_PLL:p1                                ; C:/Users/Tom/Google Drive/Duke/paint/DE2_115_Default/V/VGA_Audio_PLL.v ;
-; Altera ; ROM: 1-PORT  ; N/A     ; N/A          ; N/A          ; |DE2_115_Default|vga_controller:vga_ins|img_data:img_data_inst   ; C:/Users/Tom/Google Drive/Duke/paint/DE2_115_Default/V/img_data.v      ;
-; Altera ; ROM: 1-PORT  ; N/A     ; N/A          ; N/A          ; |DE2_115_Default|vga_controller:vga_ins|img_index:img_index_inst ; C:/Users/Tom/Google Drive/Duke/paint/DE2_115_Default/V/img_index.v     ;
-+--------+--------------+---------+--------------+--------------+------------------------------------------------------------------+------------------------------------------------------------------------+
++--------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis IP Cores Summary                                                                                                            ;
++--------+--------------+---------+--------------+--------------+----------------------------------------------------------------+-----------------+
+; Vendor ; IP Core Name ; Version ; Release Date ; License Type ; Entity Instance                                                ; IP Include File ;
++--------+--------------+---------+--------------+--------------+----------------------------------------------------------------+-----------------+
+; Altera ; RAM: 1-PORT  ; 14.1    ; N/A          ; N/A          ; |DE2_115_Default|vga_controller:vga_ins|indexRAM:img_data_inst ; indexRAM.v      ;
++--------+--------------+---------+--------------+--------------+----------------------------------------------------------------+-----------------+
 
 
 +------------------------------------------------------------+
@@ -306,7 +302,7 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 +----------------------------------------------+-------+
 ; Statistic                                    ; Value ;
 +----------------------------------------------+-------+
-; Total registers                              ; 123   ;
+; Total registers                              ; 129   ;
 ; Number of registers using Synchronous Clear  ; 19    ;
 ; Number of registers using Synchronous Load   ; 0     ;
 ; Number of registers using Asynchronous Clear ; 66    ;
@@ -317,7 +313,7 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 
 
 +-------------------------------------------------------------------------------------------------------------------------------------+
-; Source assignments for vga_controller:vga_ins|img_data:img_data_inst|altsyncram:altsyncram_component|altsyncram_skd1:auto_generated ;
+; Source assignments for vga_controller:vga_ins|indexRAM:img_data_inst|altsyncram:altsyncram_component|altsyncram_1hh1:auto_generated ;
 +---------------------------------+--------------------+------+-----------------------------------------------------------------------+
 ; Assignment                      ; Value              ; From ; To                                                                    ;
 +---------------------------------+--------------------+------+-----------------------------------------------------------------------+
@@ -726,63 +722,63 @@ Note: In order to hide this table in the UI and the text report file, please set
 
 
 +----------------------------------------------------------------------------------------------------------------------------+
-; Parameter Settings for User Entity Instance: vga_controller:vga_ins|img_data:img_data_inst|altsyncram:altsyncram_component ;
-+------------------------------------+------------------------------+--------------------------------------------------------+
-; Parameter Name                     ; Value                        ; Type                                                   ;
-+------------------------------------+------------------------------+--------------------------------------------------------+
-; BYTE_SIZE_BLOCK                    ; 8                            ; Untyped                                                ;
-; AUTO_CARRY_CHAINS                  ; ON                           ; AUTO_CARRY                                             ;
-; IGNORE_CARRY_BUFFERS               ; OFF                          ; IGNORE_CARRY                                           ;
-; AUTO_CASCADE_CHAINS                ; ON                           ; AUTO_CASCADE                                           ;
-; IGNORE_CASCADE_BUFFERS             ; OFF                          ; IGNORE_CASCADE                                         ;
-; WIDTH_BYTEENA                      ; 1                            ; Untyped                                                ;
-; OPERATION_MODE                     ; ROM                          ; Untyped                                                ;
-; WIDTH_A                            ; 8                            ; Signed Integer                                         ;
-; WIDTHAD_A                          ; 19                           ; Signed Integer                                         ;
-; NUMWORDS_A                         ; 307200                       ; Signed Integer                                         ;
-; OUTDATA_REG_A                      ; UNREGISTERED                 ; Untyped                                                ;
-; ADDRESS_ACLR_A                     ; NONE                         ; Untyped                                                ;
-; OUTDATA_ACLR_A                     ; NONE                         ; Untyped                                                ;
-; WRCONTROL_ACLR_A                   ; NONE                         ; Untyped                                                ;
-; INDATA_ACLR_A                      ; NONE                         ; Untyped                                                ;
-; BYTEENA_ACLR_A                     ; NONE                         ; Untyped                                                ;
-; WIDTH_B                            ; 1                            ; Untyped                                                ;
-; WIDTHAD_B                          ; 1                            ; Untyped                                                ;
-; NUMWORDS_B                         ; 1                            ; Untyped                                                ;
-; INDATA_REG_B                       ; CLOCK1                       ; Untyped                                                ;
-; WRCONTROL_WRADDRESS_REG_B          ; CLOCK1                       ; Untyped                                                ;
-; RDCONTROL_REG_B                    ; CLOCK1                       ; Untyped                                                ;
-; ADDRESS_REG_B                      ; CLOCK1                       ; Untyped                                                ;
-; OUTDATA_REG_B                      ; UNREGISTERED                 ; Untyped                                                ;
-; BYTEENA_REG_B                      ; CLOCK1                       ; Untyped                                                ;
-; INDATA_ACLR_B                      ; NONE                         ; Untyped                                                ;
-; WRCONTROL_ACLR_B                   ; NONE                         ; Untyped                                                ;
-; ADDRESS_ACLR_B                     ; NONE                         ; Untyped                                                ;
-; OUTDATA_ACLR_B                     ; NONE                         ; Untyped                                                ;
-; RDCONTROL_ACLR_B                   ; NONE                         ; Untyped                                                ;
-; BYTEENA_ACLR_B                     ; NONE                         ; Untyped                                                ;
-; WIDTH_BYTEENA_A                    ; 1                            ; Signed Integer                                         ;
-; WIDTH_BYTEENA_B                    ; 1                            ; Untyped                                                ;
-; RAM_BLOCK_TYPE                     ; M9K                          ; Untyped                                                ;
-; BYTE_SIZE                          ; 8                            ; Untyped                                                ;
-; READ_DURING_WRITE_MODE_MIXED_PORTS ; DONT_CARE                    ; Untyped                                                ;
-; READ_DURING_WRITE_MODE_PORT_A      ; NEW_DATA_NO_NBE_READ         ; Untyped                                                ;
-; READ_DURING_WRITE_MODE_PORT_B      ; NEW_DATA_NO_NBE_READ         ; Untyped                                                ;
-; INIT_FILE                          ; ./VGA_DATA/img_data_logo.mif ; Untyped                                                ;
-; INIT_FILE_LAYOUT                   ; PORT_A                       ; Untyped                                                ;
-; MAXIMUM_DEPTH                      ; 0                            ; Untyped                                                ;
-; CLOCK_ENABLE_INPUT_A               ; BYPASS                       ; Untyped                                                ;
-; CLOCK_ENABLE_INPUT_B               ; NORMAL                       ; Untyped                                                ;
-; CLOCK_ENABLE_OUTPUT_A              ; BYPASS                       ; Untyped                                                ;
-; CLOCK_ENABLE_OUTPUT_B              ; NORMAL                       ; Untyped                                                ;
-; CLOCK_ENABLE_CORE_A                ; USE_INPUT_CLKEN              ; Untyped                                                ;
-; CLOCK_ENABLE_CORE_B                ; USE_INPUT_CLKEN              ; Untyped                                                ;
-; ENABLE_ECC                         ; FALSE                        ; Untyped                                                ;
-; ECC_PIPELINE_STAGE_ENABLED         ; FALSE                        ; Untyped                                                ;
-; WIDTH_ECCSTATUS                    ; 3                            ; Untyped                                                ;
-; DEVICE_FAMILY                      ; Cyclone IV E                 ; Untyped                                                ;
-; CBXI_PARAMETER                     ; altsyncram_skd1              ; Untyped                                                ;
-+------------------------------------+------------------------------+--------------------------------------------------------+
+; Parameter Settings for User Entity Instance: vga_controller:vga_ins|indexRAM:img_data_inst|altsyncram:altsyncram_component ;
++------------------------------------+----------------------+----------------------------------------------------------------+
+; Parameter Name                     ; Value                ; Type                                                           ;
++------------------------------------+----------------------+----------------------------------------------------------------+
+; BYTE_SIZE_BLOCK                    ; 8                    ; Untyped                                                        ;
+; AUTO_CARRY_CHAINS                  ; ON                   ; AUTO_CARRY                                                     ;
+; IGNORE_CARRY_BUFFERS               ; OFF                  ; IGNORE_CARRY                                                   ;
+; AUTO_CASCADE_CHAINS                ; ON                   ; AUTO_CASCADE                                                   ;
+; IGNORE_CASCADE_BUFFERS             ; OFF                  ; IGNORE_CASCADE                                                 ;
+; WIDTH_BYTEENA                      ; 1                    ; Untyped                                                        ;
+; OPERATION_MODE                     ; SINGLE_PORT          ; Untyped                                                        ;
+; WIDTH_A                            ; 8                    ; Signed Integer                                                 ;
+; WIDTHAD_A                          ; 19                   ; Signed Integer                                                 ;
+; NUMWORDS_A                         ; 524288               ; Signed Integer                                                 ;
+; OUTDATA_REG_A                      ; CLOCK0               ; Untyped                                                        ;
+; ADDRESS_ACLR_A                     ; NONE                 ; Untyped                                                        ;
+; OUTDATA_ACLR_A                     ; NONE                 ; Untyped                                                        ;
+; WRCONTROL_ACLR_A                   ; NONE                 ; Untyped                                                        ;
+; INDATA_ACLR_A                      ; NONE                 ; Untyped                                                        ;
+; BYTEENA_ACLR_A                     ; NONE                 ; Untyped                                                        ;
+; WIDTH_B                            ; 1                    ; Untyped                                                        ;
+; WIDTHAD_B                          ; 1                    ; Untyped                                                        ;
+; NUMWORDS_B                         ; 1                    ; Untyped                                                        ;
+; INDATA_REG_B                       ; CLOCK1               ; Untyped                                                        ;
+; WRCONTROL_WRADDRESS_REG_B          ; CLOCK1               ; Untyped                                                        ;
+; RDCONTROL_REG_B                    ; CLOCK1               ; Untyped                                                        ;
+; ADDRESS_REG_B                      ; CLOCK1               ; Untyped                                                        ;
+; OUTDATA_REG_B                      ; UNREGISTERED         ; Untyped                                                        ;
+; BYTEENA_REG_B                      ; CLOCK1               ; Untyped                                                        ;
+; INDATA_ACLR_B                      ; NONE                 ; Untyped                                                        ;
+; WRCONTROL_ACLR_B                   ; NONE                 ; Untyped                                                        ;
+; ADDRESS_ACLR_B                     ; NONE                 ; Untyped                                                        ;
+; OUTDATA_ACLR_B                     ; NONE                 ; Untyped                                                        ;
+; RDCONTROL_ACLR_B                   ; NONE                 ; Untyped                                                        ;
+; BYTEENA_ACLR_B                     ; NONE                 ; Untyped                                                        ;
+; WIDTH_BYTEENA_A                    ; 1                    ; Signed Integer                                                 ;
+; WIDTH_BYTEENA_B                    ; 1                    ; Untyped                                                        ;
+; RAM_BLOCK_TYPE                     ; M9K                  ; Untyped                                                        ;
+; BYTE_SIZE                          ; 8                    ; Untyped                                                        ;
+; READ_DURING_WRITE_MODE_MIXED_PORTS ; DONT_CARE            ; Untyped                                                        ;
+; READ_DURING_WRITE_MODE_PORT_A      ; NEW_DATA_NO_NBE_READ ; Untyped                                                        ;
+; READ_DURING_WRITE_MODE_PORT_B      ; NEW_DATA_NO_NBE_READ ; Untyped                                                        ;
+; INIT_FILE                          ; UNUSED               ; Untyped                                                        ;
+; INIT_FILE_LAYOUT                   ; PORT_A               ; Untyped                                                        ;
+; MAXIMUM_DEPTH                      ; 0                    ; Untyped                                                        ;
+; CLOCK_ENABLE_INPUT_A               ; BYPASS               ; Untyped                                                        ;
+; CLOCK_ENABLE_INPUT_B               ; NORMAL               ; Untyped                                                        ;
+; CLOCK_ENABLE_OUTPUT_A              ; BYPASS               ; Untyped                                                        ;
+; CLOCK_ENABLE_OUTPUT_B              ; NORMAL               ; Untyped                                                        ;
+; CLOCK_ENABLE_CORE_A                ; USE_INPUT_CLKEN      ; Untyped                                                        ;
+; CLOCK_ENABLE_CORE_B                ; USE_INPUT_CLKEN      ; Untyped                                                        ;
+; ENABLE_ECC                         ; FALSE                ; Untyped                                                        ;
+; ECC_PIPELINE_STAGE_ENABLED         ; FALSE                ; Untyped                                                        ;
+; WIDTH_ECCSTATUS                    ; 3                    ; Untyped                                                        ;
+; DEVICE_FAMILY                      ; Cyclone IV E         ; Untyped                                                        ;
+; CBXI_PARAMETER                     ; altsyncram_1hh1      ; Untyped                                                        ;
++------------------------------------+----------------------+----------------------------------------------------------------+
 Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
 
 
@@ -870,11 +866,11 @@ Note: In order to hide this table in the UI and the text report file, please set
 ; Name                                      ; Value                                                                           ;
 +-------------------------------------------+---------------------------------------------------------------------------------+
 ; Number of entity instances                ; 2                                                                               ;
-; Entity Instance                           ; vga_controller:vga_ins|img_data:img_data_inst|altsyncram:altsyncram_component   ;
-;     -- OPERATION_MODE                     ; ROM                                                                             ;
+; Entity Instance                           ; vga_controller:vga_ins|indexRAM:img_data_inst|altsyncram:altsyncram_component   ;
+;     -- OPERATION_MODE                     ; SINGLE_PORT                                                                     ;
 ;     -- WIDTH_A                            ; 8                                                                               ;
-;     -- NUMWORDS_A                         ; 307200                                                                          ;
-;     -- OUTDATA_REG_A                      ; UNREGISTERED                                                                    ;
+;     -- NUMWORDS_A                         ; 524288                                                                          ;
+;     -- OUTDATA_REG_A                      ; CLOCK0                                                                          ;
 ;     -- WIDTH_B                            ; 1                                                                               ;
 ;     -- NUMWORDS_B                         ; 1                                                                               ;
 ;     -- ADDRESS_REG_B                      ; CLOCK1                                                                          ;
@@ -895,6 +891,16 @@ Note: In order to hide this table in the UI and the text report file, please set
 +-------------------------------------------+---------------------------------------------------------------------------------+
 
 
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "vga_controller:vga_ins"                                                                                                                                        ;
++-------------------------+-------+----------+----------------------------------------------------------------------------------------------------------------------------------------------+
+; Port                    ; Type  ; Severity ; Details                                                                                                                                      ;
++-------------------------+-------+----------+----------------------------------------------------------------------------------------------------------------------------------------------+
+; data_index_in           ; Input ; Warning  ; Declared by entity but not connected by instance. If a default value exists, it will be used.  Otherwise, the port will be connected to GND. ;
+; ctrl_index_write_enable ; Input ; Warning  ; Declared by entity but not connected by instance. If a default value exists, it will be used.  Otherwise, the port will be connected to GND. ;
++-------------------------+-------+----------+----------------------------------------------------------------------------------------------------------------------------------------------+
+
+
 +----------------------------------------------------------------------------------------------------------------+
 ; Port Connectivity Checks: "VGA_Audio_PLL:p1"                                                                   ;
 +------+--------+----------+-------------------------------------------------------------------------------------+
@@ -904,12 +910,43 @@ Note: In order to hide this table in the UI and the text report file, please set
 +------+--------+----------+-------------------------------------------------------------------------------------+
 
 
++-----------------------------------------------------+
+; Post-Synthesis Netlist Statistics for Top Partition ;
++-----------------------+-----------------------------+
+; Type                  ; Count                       ;
++-----------------------+-----------------------------+
+; boundary_port         ; 480                         ;
+; cycloneiii_ff         ; 129                         ;
+;     CLR               ; 37                          ;
+;     CLR SCLR          ; 19                          ;
+;     ENA               ; 19                          ;
+;     ENA CLR           ; 10                          ;
+;     plain             ; 44                          ;
+; cycloneiii_io_obuf    ; 145                         ;
+; cycloneiii_lcell_comb ; 597                         ;
+;     arith             ; 79                          ;
+;         2 data inputs ; 76                          ;
+;         3 data inputs ; 3                           ;
+;     normal            ; 518                         ;
+;         0 data inputs ; 2                           ;
+;         1 data inputs ; 6                           ;
+;         2 data inputs ; 7                           ;
+;         3 data inputs ; 53                          ;
+;         4 data inputs ; 450                         ;
+; cycloneiii_pll        ; 1                           ;
+; cycloneiii_ram_block  ; 536                         ;
+;                       ;                             ;
+; Max LUT depth         ; 6.00                        ;
+; Average LUT depth     ; 3.48                        ;
++-----------------------+-----------------------------+
+
+
 +-------------------------------+
 ; Elapsed Time Per Partition    ;
 +----------------+--------------+
 ; Partition Name ; Elapsed Time ;
 +----------------+--------------+
-; Top            ; 00:00:03     ;
+; Top            ; 00:00:04     ;
 +----------------+--------------+
 
 
@@ -918,24 +955,26 @@ Note: In order to hide this table in the UI and the text report file, please set
 +-------------------------------+
 Info: *******************************************************************
 Info: Running Quartus II 64-Bit Analysis & Synthesis
-    Info: Version 13.1.0 Build 162 10/23/2013 SJ Web Edition
-    Info: Processing started: Mon Apr 13 19:24:47 2015
+    Info: Version 14.1.0 Build 186 12/03/2014 SJ Web Edition
+    Info: Processing started: Mon Apr 13 20:11:47 2015
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off DE2_115_Default -c DE2_115_Default
-Info (20032): Parallel compilation is enabled and will use up to 2 processors
-Info (12021): Found 1 design units, including 1 entities, in source file v/video_sync_generator.v
+Warning (20028): Parallel compilation is not licensed and has been disabled
+Info (12021): Found 1 design units, including 1 entities, in source file V/video_sync_generator.v
     Info (12023): Found entity 1: video_sync_generator
-Info (12021): Found 1 design units, including 1 entities, in source file v/vga_controller.v
+Info (12021): Found 1 design units, including 1 entities, in source file V/vga_controller.v
     Info (12023): Found entity 1: vga_controller
-Info (12021): Found 1 design units, including 1 entities, in source file v/vga_audio_pll.v
+Info (12021): Found 1 design units, including 1 entities, in source file V/VGA_Audio_PLL.v
     Info (12023): Found entity 1: VGA_Audio_PLL
-Info (12021): Found 1 design units, including 1 entities, in source file v/reset_delay.v
+Info (12021): Found 1 design units, including 1 entities, in source file V/Reset_Delay.v
     Info (12023): Found entity 1: Reset_Delay
-Info (12021): Found 1 design units, including 1 entities, in source file v/img_index.v
+Info (12021): Found 1 design units, including 1 entities, in source file V/img_index.v
     Info (12023): Found entity 1: img_index
-Info (12021): Found 1 design units, including 1 entities, in source file v/img_data.v
+Info (12021): Found 1 design units, including 1 entities, in source file V/img_data.v
     Info (12023): Found entity 1: img_data
-Info (12021): Found 1 design units, including 1 entities, in source file de2_115_default.v
+Info (12021): Found 1 design units, including 1 entities, in source file DE2_115_Default.v
     Info (12023): Found entity 1: DE2_115_Default
+Info (12021): Found 1 design units, including 1 entities, in source file indexRAM.v
+    Info (12023): Found entity 1: indexRAM
 Warning (10236): Verilog HDL Implicit Net warning at DE2_115_Default.v(534): created implicit net for "OTG_FSPEED"
 Warning (10236): Verilog HDL Implicit Net warning at DE2_115_Default.v(535): created implicit net for "OTG_LSPEED"
 Info (12127): Elaborating entity "DE2_115_Default" for the top level hierarchy
@@ -1076,40 +1115,41 @@ Info (12021): Found 1 design units, including 1 entities, in source file db/altp
     Info (12023): Found entity 1: altpll_k3n2
 Info (12128): Elaborating entity "altpll_k3n2" for hierarchy "VGA_Audio_PLL:p1|altpll:altpll_component|altpll_k3n2:auto_generated"
 Info (12128): Elaborating entity "vga_controller" for hierarchy "vga_controller:vga_ins"
-Warning (10230): Verilog HDL assignment warning at vga_controller.v(40): truncated value with size 32 to match size of target (19)
+Warning (10230): Verilog HDL assignment warning at vga_controller.v(44): truncated value with size 32 to match size of target (19)
 Info (12128): Elaborating entity "video_sync_generator" for hierarchy "vga_controller:vga_ins|video_sync_generator:LTM_ins"
 Warning (10230): Verilog HDL assignment warning at video_sync_generator.v(77): truncated value with size 32 to match size of target (10)
 Warning (10230): Verilog HDL assignment warning at video_sync_generator.v(80): truncated value with size 32 to match size of target (11)
-Info (12128): Elaborating entity "img_data" for hierarchy "vga_controller:vga_ins|img_data:img_data_inst"
-Info (12128): Elaborating entity "altsyncram" for hierarchy "vga_controller:vga_ins|img_data:img_data_inst|altsyncram:altsyncram_component"
-Info (12130): Elaborated megafunction instantiation "vga_controller:vga_ins|img_data:img_data_inst|altsyncram:altsyncram_component"
-Info (12133): Instantiated megafunction "vga_controller:vga_ins|img_data:img_data_inst|altsyncram:altsyncram_component" with the following parameter:
-    Info (12134): Parameter "address_aclr_a" = "NONE"
+Info (12128): Elaborating entity "indexRAM" for hierarchy "vga_controller:vga_ins|indexRAM:img_data_inst"
+Info (12128): Elaborating entity "altsyncram" for hierarchy "vga_controller:vga_ins|indexRAM:img_data_inst|altsyncram:altsyncram_component"
+Info (12130): Elaborated megafunction instantiation "vga_controller:vga_ins|indexRAM:img_data_inst|altsyncram:altsyncram_component"
+Info (12133): Instantiated megafunction "vga_controller:vga_ins|indexRAM:img_data_inst|altsyncram:altsyncram_component" with the following parameter:
     Info (12134): Parameter "clock_enable_input_a" = "BYPASS"
     Info (12134): Parameter "clock_enable_output_a" = "BYPASS"
-    Info (12134): Parameter "init_file" = "./VGA_DATA/img_data_logo.mif"
     Info (12134): Parameter "intended_device_family" = "Cyclone IV E"
     Info (12134): Parameter "lpm_hint" = "ENABLE_RUNTIME_MOD=NO"
     Info (12134): Parameter "lpm_type" = "altsyncram"
-    Info (12134): Parameter "numwords_a" = "307200"
-    Info (12134): Parameter "operation_mode" = "ROM"
+    Info (12134): Parameter "numwords_a" = "524288"
+    Info (12134): Parameter "operation_mode" = "SINGLE_PORT"
     Info (12134): Parameter "outdata_aclr_a" = "NONE"
-    Info (12134): Parameter "outdata_reg_a" = "UNREGISTERED"
+    Info (12134): Parameter "outdata_reg_a" = "CLOCK0"
+    Info (12134): Parameter "power_up_uninitialized" = "FALSE"
     Info (12134): Parameter "ram_block_type" = "M9K"
+    Info (12134): Parameter "read_during_write_mode_port_a" = "NEW_DATA_NO_NBE_READ"
     Info (12134): Parameter "widthad_a" = "19"
     Info (12134): Parameter "width_a" = "8"
     Info (12134): Parameter "width_byteena_a" = "1"
-Info (12021): Found 1 design units, including 1 entities, in source file db/altsyncram_skd1.tdf
-    Info (12023): Found entity 1: altsyncram_skd1
-Info (12128): Elaborating entity "altsyncram_skd1" for hierarchy "vga_controller:vga_ins|img_data:img_data_inst|altsyncram:altsyncram_component|altsyncram_skd1:auto_generated"
-Warning (113028): 65536 out of 307200 addresses are uninitialized. The Quartus II software will initialize them to "0". There are 1 warnings found, and 1 warnings are reported.
-    Warning (113027): Addresses ranging from 241664 to 307199 are not initialized
-Info (12021): Found 1 design units, including 1 entities, in source file db/decode_aaa.tdf
-    Info (12023): Found entity 1: decode_aaa
-Info (12128): Elaborating entity "decode_aaa" for hierarchy "vga_controller:vga_ins|img_data:img_data_inst|altsyncram:altsyncram_component|altsyncram_skd1:auto_generated|decode_aaa:rden_decode"
-Info (12021): Found 1 design units, including 1 entities, in source file db/mux_1pb.tdf
-    Info (12023): Found entity 1: mux_1pb
-Info (12128): Elaborating entity "mux_1pb" for hierarchy "vga_controller:vga_ins|img_data:img_data_inst|altsyncram:altsyncram_component|altsyncram_skd1:auto_generated|mux_1pb:mux2"
+Info (12021): Found 1 design units, including 1 entities, in source file db/altsyncram_1hh1.tdf
+    Info (12023): Found entity 1: altsyncram_1hh1
+Info (12128): Elaborating entity "altsyncram_1hh1" for hierarchy "vga_controller:vga_ins|indexRAM:img_data_inst|altsyncram:altsyncram_component|altsyncram_1hh1:auto_generated"
+Info (12021): Found 1 design units, including 1 entities, in source file db/decode_gua.tdf
+    Info (12023): Found entity 1: decode_gua
+Info (12128): Elaborating entity "decode_gua" for hierarchy "vga_controller:vga_ins|indexRAM:img_data_inst|altsyncram:altsyncram_component|altsyncram_1hh1:auto_generated|decode_gua:decode3"
+Info (12021): Found 1 design units, including 1 entities, in source file db/decode_9aa.tdf
+    Info (12023): Found entity 1: decode_9aa
+Info (12128): Elaborating entity "decode_9aa" for hierarchy "vga_controller:vga_ins|indexRAM:img_data_inst|altsyncram:altsyncram_component|altsyncram_1hh1:auto_generated|decode_9aa:rden_decode"
+Info (12021): Found 1 design units, including 1 entities, in source file db/mux_0pb.tdf
+    Info (12023): Found entity 1: mux_0pb
+Info (12128): Elaborating entity "mux_0pb" for hierarchy "vga_controller:vga_ins|indexRAM:img_data_inst|altsyncram:altsyncram_component|altsyncram_1hh1:auto_generated|mux_0pb:mux2"
 Info (12128): Elaborating entity "img_index" for hierarchy "vga_controller:vga_ins|img_index:img_index_inst"
 Info (12128): Elaborating entity "altsyncram" for hierarchy "vga_controller:vga_ins|img_index:img_index_inst|altsyncram:altsyncram_component"
 Info (12130): Elaborated megafunction instantiation "vga_controller:vga_ins|img_index:img_index_inst|altsyncram:altsyncram_component"
@@ -1132,9 +1172,7 @@ Info (12133): Instantiated megafunction "vga_controller:vga_ins|img_index:img_in
 Info (12021): Found 1 design units, including 1 entities, in source file db/altsyncram_b7d1.tdf
     Info (12023): Found entity 1: altsyncram_b7d1
 Info (12128): Elaborating entity "altsyncram_b7d1" for hierarchy "vga_controller:vga_ins|img_index:img_index_inst|altsyncram:altsyncram_component|altsyncram_b7d1:auto_generated"
-Warning (113028): 239 out of 256 addresses are uninitialized. The Quartus II software will initialize them to "0". There are 2 warnings found, and 2 warnings are reported.
-    Warning (113026): Memory Initialization File Address 8 is not initialized
-    Warning (113027): Addresses ranging from 18 to 255 are not initialized
+Warning (12241): 1 hierarchies have connectivity warnings - see the Connectivity Checks report folder
 Warning (13034): The following nodes have both tri-state and non-tri-state drivers
     Warning (13035): Inserted always-enabled tri-state buffer between "AUD_XCK" and its non-tri-state driver.
 Warning (13039): The following bidir pins have no drivers
@@ -1397,7 +1435,7 @@ Warning (13024): Output pins are stuck at VCC or GND
     Warning (13410): Pin "HSMC_TX_D_P[16]" is stuck at GND
 Info (286030): Timing-Driven Synthesis is running
 Info (17049): 6 registers lost all their fanouts during netlist optimizations.
-Info (144001): Generated suppressed messages file C:/Users/Tom/Google Drive/Duke/paint/DE2_115_Default/DE2_115_Default.map.smsg
+Info (144001): Generated suppressed messages file /home/zach/bears.zachary@gmail.com/Duke/S15/ECE350L/Homework/paint/DE2_115_Default/DE2_115_Default.map.smsg
 Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
     Info (16011): Adding 1 node(s), including 0 DDIO, 1 PLL, 0 transceiver and 0 LCELL
 Warning (15899): PLL "VGA_Audio_PLL:p1|altpll:altpll_component|altpll_k3n2:auto_generated|pll1" has parameters clk2_multiply_by and clk2_divide_by specified but port CLK[2] is not connected
@@ -1490,23 +1528,23 @@ Warning (21074): Design contains 88 input pin(s) that do not drive logic
     Warning (15610): No output dependent on input pin "HSMC_RX_D_P[14]"
     Warning (15610): No output dependent on input pin "HSMC_RX_D_P[15]"
     Warning (15610): No output dependent on input pin "HSMC_RX_D_P[16]"
-Info (21057): Implemented 1226 device resources after synthesis - the final resource count might be different
+Info (21057): Implemented 1653 device resources after synthesis - the final resource count might be different
     Info (21058): Implemented 91 input pins
     Info (21059): Implemented 248 output pins
     Info (21060): Implemented 141 bidirectional pins
-    Info (21061): Implemented 417 logic cells
-    Info (21064): Implemented 328 RAM segments
+    Info (21061): Implemented 636 logic cells
+    Info (21064): Implemented 536 RAM segments
     Info (21065): Implemented 1 PLLs
-Info: Quartus II 64-Bit Analysis & Synthesis was successful. 0 errors, 427 warnings
-    Info: Peak virtual memory: 546 megabytes
-    Info: Processing ended: Mon Apr 13 19:24:56 2015
-    Info: Elapsed time: 00:00:09
-    Info: Total CPU time (on all processors): 00:00:09
+Info: Quartus II 64-Bit Analysis & Synthesis was successful. 0 errors, 424 warnings
+    Info: Peak virtual memory: 1055 megabytes
+    Info: Processing ended: Mon Apr 13 20:12:06 2015
+    Info: Elapsed time: 00:00:19
+    Info: Total CPU time (on all processors): 00:00:44
 
 
 +------------------------------------------+
 ; Analysis & Synthesis Suppressed Messages ;
 +------------------------------------------+
-The suppressed messages can be found in C:/Users/Tom/Google Drive/Duke/paint/DE2_115_Default/DE2_115_Default.map.smsg.
+The suppressed messages can be found in /home/zach/bears.zachary@gmail.com/Duke/S15/ECE350L/Homework/paint/DE2_115_Default/DE2_115_Default.map.smsg.
 
 

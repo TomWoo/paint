@@ -1,5 +1,7 @@
 module vga_controller(iRST_n,
                       iVGA_CLK,
+							 data_index_in,
+							 ctrl_index_write_enable,
                       oBLANK_n,
                       oHS,
                       oVS,
@@ -8,6 +10,8 @@ module vga_controller(iRST_n,
                       r_data);
 input iRST_n;
 input iVGA_CLK;
+input [7:0] data_index_in; // The input index to be written to input memory 
+input ctrl_index_write_enable; // The enable signal for writing the index
 output reg oBLANK_n;
 output reg oHS;
 output reg oVS;
@@ -42,9 +46,11 @@ end
 //////////////////////////
 //////INDEX addr.
 assign VGA_CLK_n = ~iVGA_CLK;
-img_data	img_data_inst (
+indexRAM	img_data_inst (
 	.address ( ADDR ),
 	.clock ( VGA_CLK_n ),
+	.data(data_index_in),
+	.wren(ctrl_index_write_enable),
 	.q ( index )
 	);
 //////Color table output
