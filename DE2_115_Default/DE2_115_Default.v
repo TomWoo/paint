@@ -558,6 +558,13 @@ Reset_Delay			r0	(	.iCLK(CLOCK_50),.oRESET(DLY_RST)	);
 
 VGA_Audio_PLL 		p1	(	.areset(~DLY_RST),.inclk0(CLOCK2_50),.c0(VGA_CTRL_CLK),.c1(AUD_CTRL_CLK),.c2(mVGA_CLK)	);
 
+//processor here
+wire clock, reset;
+wire[23:0] color_data;
+assign color_data = debug_data[23:0];
+processor(clock, reset, ps2_key_pressed, ps2_out, lcd_write, lcd_data, debug_data, debug_addr,debug_regdst, debug_regdata,debug_inputAforwarding_execute,
+debug_inputBforwarding_execute,debug_status_execute,debug_writeToRegister_writeback, debug_writebackforward_memory,debug_aluOutput_execute, debug_multRegister_execute,debug_data_hazard_execute);
+
 //	VGA Controller
 //assign VGA_BLANK_N = !cDEN;
 assign VGA_CLK = VGA_CTRL_CLK;
@@ -566,7 +573,10 @@ vga_controller vga_ins(.iRST_n(DLY_RST),
                       .oBLANK_n(VGA_BLANK_N),
                       .oHS(VGA_HS),
                       .oVS(VGA_VS),
-                      .b_data(VGA_B),
+                      /*.b_data(VGA_B),
                       .g_data(VGA_G),
-                      .r_data(VGA_R));
+                      .r_data(VGA_R));*/
+							 .b_data(color_data[23:16]),
+                      .g_data(color_data[15:8]),
+                      .r_data(color_data[7:0]));
 endmodule
