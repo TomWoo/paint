@@ -516,21 +516,23 @@ Reset_Delay			r0	(	.iCLK(CLOCK_50),.oRESET(DLY_RST)	);
 VGA_Audio_PLL 		p1	(	.areset(~DLY_RST),.inclk0(CLOCK2_50),.c0(VGA_CTRL_CLK),.c1(AUD_CTRL_CLK),.c2(mVGA_CLK)	);
 
 //processor here
-wire clock, reset;
-assign clock = VGA_CTRL_CLK;
-assign reset = DLY_RST;
-processor my_processor(clock, reset, ps2_key_pressed, ps2_out, lcd_write, lcd_data, debug_data, debug_addr,debug_regdst, debug_regdata,debug_inputAforwarding_execute,
-debug_inputBforwarding_execute,debug_status_execute,debug_writeToRegister_writeback, debug_writebackforward_memory,debug_aluOutput_execute, debug_multRegister_execute,debug_data_hazard_execute);
+wire[31:0] debug_data;
 wire[23:0] index_data;
-assign index_data = debug_data;
+
+assign index_data = debug_data[23:0];
+processor my_processor(.clock(CLOCK2_50/*TODO make sure the clock is at the right frequency */), .reset(DLY_RST), .debug_data(index_data)/* TODO make write enable, read/write address out, and read/write data out*/);
+
+
 
 //	VGA Controller
 //assign VGA_BLANK_N = !cDEN;
 assign VGA_CLK = VGA_CTRL_CLK;
+
+/* TODO expand VGA ram to 4294967296 and make it 2 port read and write to ensure refreshing is complete separate from reading */
 vga_controller vga_ins(.iRST_n(DLY_RST),
                       .iVGA_CLK(VGA_CTRL_CLK),
 							 .data_index_in(index_data),
-							 .ctrl_index_write_enable(1'b1),
+							 .ctrl_index_write_enable(1'b1/*TODO fix this thing. This will clear memory as we read currently...*/),
                       .oBLANK_n(VGA_BLANK_N),
                       .oHS(VGA_HS),
                       .oVS(VGA_VS),
