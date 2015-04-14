@@ -3,20 +3,14 @@
 //SECTION : Processor
 //
 //*******************************************************************************************************************
-module processor(clock, reset, ps2_key_pressed, ps2_out, lcd_write, lcd_data, debug_data, debug_addr,debug_regdst, debug_regdata,debug_inputAforwarding_execute,
-debug_inputBforwarding_execute,debug_status_execute,debug_writeToRegister_writeback, debug_writebackforward_memory,debug_aluOutput_execute, debug_multRegister_execute,debug_data_hazard_execute);
+module processor(clock, reset, memory_read_data,ctrl_memory_write_enable, ps2_key_pressed, ps2_out, lcd_write, lcd_data, debug_data, debug_addr);
 
 	input 	clock, reset, ps2_key_pressed;
+	input [31:0] memory_read_data; /* The data read from memory */
 	input 	[7:0]	ps2_out;
 	output 	lcd_write;
 	output 	[31:0] 	lcd_data;
-	//Debug signals
-	output [31:0] debug_regdata;
-	output [4:0] debug_regdst, debug_multRegister_execute;
-	output [31:0]debug_aluOutput_execute;
-	output [1:0] debug_inputAforwarding_execute,debug_inputBforwarding_execute;
-	output [4:0] debug_status_execute;
-	output debug_writeToRegister_writeback,debug_writebackforward_memory,debug_data_hazard_execute;
+	output ctrl_memory_write_enable; /* A control signal to indicate whether memory should be written to */
 	// GRADER OUTPUTS - YOU MUST CONNECT TO YOUR DMEM
 	output 	[31:0] 	debug_data;
 	output	[11:0]	debug_addr;
@@ -148,8 +142,9 @@ debug_inputBforwarding_execute,debug_status_execute,debug_writeToRegister_writeb
 	wire [31:0] memoryDataIn_memory, aluOperandB_memory, aluOutput_memory, memoryOutput_memory;
 	Mux2b32w MemoryForwardUnit(.inA(newData_writeback),.inB(aluOperandB_memory),.out(memoryDataIn_memory), 
 	                          .select(&(rd_memory~^regWriteAddr_writeback)&(ctrl_regDataWrite_writeback|ctrl_returnAddrRegWrite_decode)));
-	//Make the memory stage	
-	MemoryStage memstage(.clk(clk), .data_addr(aluOutput_memory), .data_output(memoryOutput_memory), .data_in(memoryDataIn_memory),.ctrl_memoryWriteEnable(ctrl_memoryWriteEnable_memory), .ctrl_enable(1'b1));
+	//Set the memory from external
+		assign memoryOutput_memory = memory_read_data ;
+		assign ctrl_memory_write_enable = ctrl_memoryWriteEnable_memory;
 	//Memory writeback interconnect
 	RegNb #(.n(71))MemWBInterconnect(.clk(clk),.write_enable(~ctrl_multDivReady_execute),.data({memoryOutput_memory,aluOutput_memory,rd_memory,ctrl_registerWriteEnable_memory,ctrl_writeMemToReg_memory}),
 	                                .out({memOutput_writeback,aluoutput_writeback,rd_writeback,ctrl_regDataWrite_writeback,ctrl_writeMemToReg_writeback}),.reset(reset));
@@ -172,20 +167,6 @@ debug_inputBforwarding_execute,debug_status_execute,debug_writeToRegister_writeb
 	assign debug_addr = aluOutput_memory[11:0];
 	// CHANGE THIS TO ASSIGN YOUR DMEM DATA INPUT (TO BE WRITTEN) ALSO TO debug_data
 	assign debug_data = memoryDataIn_memory;
-	//For debugging, assign some pins. TODO remove these pins once everything works
-	assign lcd_data = programCounter_fetch;
-	assign debug_regdst = regWriteAddr_writeback;
-	assign debug_regdata = newData_writeback;
-	assign debug_status_execute = status_execute[4:0];
-	assign debug_inputAforwarding_execute = {(&(rd_memory~^rs_execute))&(ctrl_registerWriteEnable_memory|ctrl_memoryWriteEnable_memory)/*If we need to grab from write*/,
-	(&(regWriteAddr_writeback~^rs_execute))&(ctrl_regDataWrite_writeback|ctrl_returnAddrRegWrite_decode)/*If we need to grab from writeback*/};
-	assign debug_inputBforwarding_execute = {(&(rd_memory~^regReadAddr2_execute))&(ctrl_registerWriteEnable_memory|ctrl_memoryWriteEnable_memory)/*If we need to grab from write*/,(
-	&(regWriteAddr_writeback~^regReadAddr2_execute))&(ctrl_regDataWrite_writeback|ctrl_returnAddrRegWrite_decode)/*If we need to grab from writeback*/};
-	assign debug_writeToRegister_writeback = ctrl_multDivReady_execute|ctrl_regDataWrite_writeback|ctrl_returnAddrRegWrite_decode;
-	assign debug_writebackforward_memory = &(rd_memory~^regWriteAddr_writeback)&(ctrl_regDataWrite_writeback|ctrl_returnAddrRegWrite_decode);
-	assign debug_aluOutput_execute = aluOutput_execute;
-	assign debug_multRegister_execute = multDiv_addr_execute;
-	assign debug_data_hazard_execute = ctrl_multDivReservedHazard_execute;
 	////////////////////////////////////////////////////////////
 	
 endmodule
@@ -403,19 +384,23 @@ endmodule
 // ctrl_memoryWriteEnable -- the write enable (1)
 // ctrl_enable -- enable signal for the module (1)
 // ctrl_reset -- the reset signal for the stage (1)
+
+/* This has been removed for the paint program as memory is now external to the processor
+
 module MemoryStage(clk, data_addr, data_output,data_in, ctrl_memoryWriteEnable, ctrl_enable);
 	input clk, ctrl_enable,ctrl_memoryWriteEnable;
 	input [31:0] data_addr, data_in;
 	output [31:0] data_output;
 	
 	// You'll need to change where the dmem and imem read and write...
-	/*dmem mydmem(	.address	(data_addr),
+	dmem mydmem(	.address	(data_addr),
 	.clock	(!clk),
 	.data	(data_in),
 	.wren	(ctrl_memoryWriteEnable&ctrl_enable),
 	.q	(data_output)
-	);*/
+	);
 endmodule
+*/
 
 
 
