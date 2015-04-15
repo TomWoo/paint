@@ -55,7 +55,7 @@ assign VGA_CLK_n = ~iVGA_CLK;
 
 indexRAM	indexRAM_inst (
 	.clock_a(processorClk),
-	.address_a(data_index_in),
+	.address_a(data_memory_address_in),
 	.data_a(data_index_in),
 	.wren_a(ctrl_index_write_enable),
 	.q_a(memory_read_data_out),
