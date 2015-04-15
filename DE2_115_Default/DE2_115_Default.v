@@ -517,16 +517,14 @@ VGA_Audio_PLL 		p1	(	.areset(~DLY_RST),.inclk0(CLOCK2_50),.c0(VGA_CTRL_CLK),.c1(
 
 //processor here
 wire[31:0] debug_data,debug_write_address_out;
-wire[23:0] index_data;
+wire[31:0] index_data;
 wire ctrl_memoryWrite;
 
-assign index_data = debug_data[23:0];
-
-processor my_processor(.clock(CLOCK2_50/*TODO make sure the clock is at the right frequency. Might have matching problems with VGA memory clock... */),
-                       .reset(1'b0), .memory_read_data(32'b0/*TODO put in read data from VGA_controller in here */), .ctrl_memory_write_enable(ctrl_memoryWrite),
+processor my_processor(.clock(VGA_CTRL_CLK/*TODO make sure the clock is at the right frequency. Might have matching problems with VGA memory clock... */),
+                       .reset(DLY_RST), .memory_read_data(32'b0/*TODO put in read data from VGA_controller in here */),
 							  .debug_data(index_data)/* TODO make write enable, read/write address out, and read/write data out*/,
-							  .debug_addr(write_address_out /* TODO make this fed into the VGA controller memory*/));
-
+							  .debug_addr(debug_write_address_out /* TODO make this fed into the VGA controller memory*/),
+							  .ctrl_memory_write_enable(ctrl_memoryWrite));
 
 
 //	VGA Controller
@@ -536,6 +534,7 @@ assign VGA_CLK = VGA_CTRL_CLK;
 /* TODO expand VGA ram to 4294967296 and make it 2 port read and write to ensure refreshing is complete separate from reading. Need to make sure integrated controls here */
 vga_controller vga_ins(.iRST_n(DLY_RST),
                       .iVGA_CLK(VGA_CTRL_CLK),
+							 .clock25(ENETCLK_25),
 							 .data_index_in(index_data),
 							 .ctrl_index_write_enable(ctrl_memoryWrite),
                       .oBLANK_n(VGA_BLANK_N),
