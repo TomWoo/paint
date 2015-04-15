@@ -12,6 +12,20 @@ addi $r1, $r1, 0x280
 sw $r2, 0($r1)
 addi $r1, $r1, 0x280
 sw $r2, 0($r1)
+addi $r2, $r0, 0x0
+addi $r1, $r0, 0x284
+sw $r2, 0($r1)
+addi $r1, $r1, 0x280
+sw $r2, 0($r1)
+addi $r1, $r1, 0x280
+sw $r2, 0($r1)
+addi $r1, $r1, 0x280
+sw $r2, 0($r1)
+addi $r1, $r1, 0x280
+sw $r2, 0($r1)
+addi $r1, $r1, 0x280
+sw $r2, 0($r1)
+j main
 quit: halt
 .data
 wow: .word 0x0000B504
