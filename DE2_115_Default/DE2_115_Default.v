@@ -535,6 +535,7 @@ assign VGA_CLK = VGA_CTRL_CLK;
 vga_controller vga_ins(.iRST_n(DLY_RST),
                       .iVGA_CLK(VGA_CTRL_CLK),
 							 .clock25(ENETCLK_25),
+							 .addr_index_in(debug_write_address_out),
 							 .data_index_in(index_data),
 							 .ctrl_index_write_enable(ctrl_memoryWrite),
                       .oBLANK_n(VGA_BLANK_N),
