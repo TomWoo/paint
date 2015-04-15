@@ -13,7 +13,7 @@ module processor(clock, reset, memory_read_data,ctrl_memory_write_enable, ps2_ke
 	output ctrl_memory_write_enable; /* A control signal to indicate whether memory should be written to */
 	// GRADER OUTPUTS - YOU MUST CONNECT TO YOUR DMEM
 	output 	[31:0] 	debug_data;
-	output	[11:0]	debug_addr;
+	output	[31:0]	debug_addr;
 
 	//Global Control wires
 	wire ctrl_hazard;
@@ -164,7 +164,7 @@ module processor(clock, reset, memory_read_data,ctrl_memory_write_enable, ps2_ke
 	
 	// THIS IS REQUIRED FOR GRADING
 	// CHANGE THIS TO ASSIGN YOUR DMEM WRITE ADDRESS ALSO TO debug_addr
-	assign debug_addr = aluOutput_memory[11:0];
+	assign debug_addr = aluOutput_memory;
 	// CHANGE THIS TO ASSIGN YOUR DMEM DATA INPUT (TO BE WRITTEN) ALSO TO debug_data
 	assign debug_data = memoryDataIn_memory;
 	////////////////////////////////////////////////////////////

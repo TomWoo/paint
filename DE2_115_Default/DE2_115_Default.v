@@ -521,7 +521,7 @@ wire[31:0] index_data;
 wire ctrl_memoryWrite;
 
 processor my_processor(.clock(VGA_CTRL_CLK/*TODO make sure the clock is at the right frequency. Might have matching problems with VGA memory clock... */),
-                       .reset(DLY_RST), .memory_read_data(32'b0/*TODO put in read data from VGA_controller in here */),
+                       .reset(1'b0), .memory_read_data(32'b0/*TODO put in read data from VGA_controller in here */),
 							  .debug_data(index_data)/* TODO make write enable, read/write address out, and read/write data out*/,
 							  .debug_addr(debug_write_address_out /* TODO make this fed into the VGA controller memory*/),
 							  .ctrl_memory_write_enable(ctrl_memoryWrite));
