@@ -1,8 +1,10 @@
 module vga_controller(iRST_n,
                       iVGA_CLK,
-							 clock25,
+							 processorClk,
 							 data_index_in,
+							 data_memory_address_in,
 							 ctrl_index_write_enable,
+							 memory_read_data_out,
                       oBLANK_n,
                       oHS,
                       oVS,
@@ -11,20 +13,22 @@ module vga_controller(iRST_n,
                       r_data);
 input iRST_n;
 input iVGA_CLK;
-input clock25;
+input processorClk;
 input [31:0] data_index_in; // The input index to be written to input memory 
+input [31:0] data_memory_address_in; // the input data to be written to memory
 input ctrl_index_write_enable; // The enable signal for writing the index
 output reg oBLANK_n;
 output reg oHS;
 output reg oVS;
 output [7:0] b_data;
 output [7:0] g_data;  
-output [7:0] r_data;                        
+output [7:0] r_data;
+output [31:0] memory_read_data_out;                        
 ///////// ////                     
 reg [18:0] ADDR;
 reg [23:0] bgr_data;
 wire VGA_CLK_n;
-wire [7:0] index;
+wire [31:0] index;
 wire [23:0] bgr_data_raw;
 wire cBLANK_n,cHS,cVS,rst;
 ////
@@ -48,34 +52,22 @@ end
 //////////////////////////
 //////INDEX addr.
 assign VGA_CLK_n = ~iVGA_CLK;
-/*
-img_data	img_data_inst (
-	.address ( ADDR ),
-	.clock ( VGA_CLK_n ),
-	.q ( index )
-	);*/
+
 indexRAM	indexRAM_inst (
-	.clock_a(VGA_CLK_n),
-	.address_a(data_index_in[31:8]/*TODO: change bit-width*/),
-	.data_a(data_index_in[7:0]/*TODO: change bit-width*/),
+	.clock_a(processorClk),
+	.address_a(data_index_in),
+	.data_a(data_index_in),
 	.wren_a(ctrl_index_write_enable),
-	.clock_b(iVGA_CLK),
+	.q_a(memory_read_data_out),
+	.clock_b(VGA_CLK_n),
 	.address_b(ADDR),
 	.wren_b(1'b0),
 	.q_b(index)
 	);
 	
-	/*
-colorRAM	colorRAM_inst (
-	.address ( index ),
-	.clock ( VGA_CLK_n ),
-	.data(data_color_in),
-	.wren(ctrl_color_write_enable),
-	.q ( bgr_data_raw )
-	);*/
 //////Color table output
 img_index	img_index_inst (
-	.address ( index ),
+	.address ( index[6:0] ),
 	.clock ( iVGA_CLK ),
 	.q ( bgr_data_raw)
 	);
