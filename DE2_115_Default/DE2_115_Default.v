@@ -517,13 +517,14 @@ VGA_Audio_PLL 		p1	(	.areset(~DLY_RST),.inclk0(CLOCK2_50),.c0(VGA_CTRL_CLK),.c1(
 
 //processor here
 wire[31:0] debug_data,debug_write_address_out;
-wire[31:0] index_data;
+wire[31:0] data_index, read_data;
 wire ctrl_memoryWrite;
 
-processor my_processor(.clock(VGA_CTRL_CLK/*TODO make sure the clock is at the right frequency. Might have matching problems with VGA memory clock... */),
-                       .reset(1'b0), .memory_read_data(32'b0/*TODO put in read data from VGA_controller in here */),
-							  .debug_data(index_data)/* TODO make write enable, read/write address out, and read/write data out*/,
-							  .debug_addr(debug_write_address_out /* TODO make this fed into the VGA controller memory*/),
+processor my_processor(.clock(VGA_CTRL_CLK/*TODO perhaps use a button as a clock to debug */),
+                       .reset(1'b0),
+							  .memory_read_data(read_data),
+							  .debug_data(data_index),
+							  .debug_addr(debug_write_address_out),
 							  .ctrl_memory_write_enable(ctrl_memoryWrite));
 
 
@@ -534,9 +535,8 @@ assign VGA_CLK = VGA_CTRL_CLK;
 /* TODO expand VGA ram to 4294967296 and make it 2 port read and write to ensure refreshing is complete separate from reading. Need to make sure integrated controls here */
 vga_controller vga_ins(.iRST_n(DLY_RST),
                       .iVGA_CLK(VGA_CTRL_CLK),
-							 .clock25(ENETCLK_25),
 							 .addr_index_in(debug_write_address_out),
-							 .data_index_in(index_data),
+							 .data_index_in(data_index),
 							 .ctrl_index_write_enable(ctrl_memoryWrite),
                       .oBLANK_n(VGA_BLANK_N),
                       .oHS(VGA_HS),
@@ -544,4 +544,14 @@ vga_controller vga_ins(.iRST_n(DLY_RST),
                       .b_data(VGA_B),
                       .g_data(VGA_G),
                       .r_data(VGA_R));
+							 
+
+LCD_TEST 			u5	(	//	Host Side
+							.iCLK(CLOCK_50),
+							.iRST_N(DLY_RST),
+							//	LCD Side
+							.LCD_DATA(LCD_D_1),
+							.LCD_RW(LCD_RW_1),
+							.LCD_EN(LCD_EN_1),
+							.LCD_RS(LCD_RS_1) );
 endmodule

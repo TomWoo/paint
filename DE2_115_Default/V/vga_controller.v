@@ -1,6 +1,5 @@
 module vga_controller(iRST_n,
                       iVGA_CLK,
-							 clock25,
 							 addr_index_in,
 							 data_index_in,
 							 ctrl_index_write_enable,
@@ -12,7 +11,6 @@ module vga_controller(iRST_n,
                       r_data);
 input iRST_n;
 input iVGA_CLK;
-input clock25;
 input [31:0] addr_index_in, data_index_in; // The input index to be written to input memory 
 input ctrl_index_write_enable; // The enable signal for writing the index
 output reg oBLANK_n;
