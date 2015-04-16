@@ -56,18 +56,18 @@ assign VGA_CLK_n = ~iVGA_CLK;
 indexRAM	indexRAM_inst (
 	.clock_a(processorClk),
 	.address_a(data_memory_address_in),
-	.data_a(data_index_in),
+	.data_a(data_index_in[7:0]),
 	.wren_a(ctrl_index_write_enable),
-	.q_a(memory_read_data_out),
+	.q_a(memory_read_data_out[7:0]),
 	.clock_b(VGA_CLK_n),
 	.address_b(ADDR),
 	.wren_b(1'b0),
-	.q_b(index)
+	.q_b(index[7:0])
 	);
 	
 //////Color table output
 img_index	img_index_inst (
-	.address ( index[6:0] ),
+	.address ( index[7:0] ),
 	.clock ( iVGA_CLK ),
 	.q ( bgr_data_raw)
 	);

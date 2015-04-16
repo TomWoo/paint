@@ -4,7 +4,6 @@
 //
 //*******************************************************************************************************************
 module processor(clock, reset, memory_read_data,ctrl_memory_write_enable, ps2_key_pressed, ps2_out, lcd_write, lcd_data, debug_data, debug_addr);
-
 	input 	clock, reset, ps2_key_pressed;
 	input [31:0] memory_read_data; /* The data read from memory */
 	input 	[7:0]	ps2_out;

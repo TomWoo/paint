@@ -520,7 +520,7 @@ wire[31:0] debug_data,debug_write_address_out;
 wire[31:0] index_data,memory_read_data;
 wire ctrl_memoryWrite;
 
-processor my_processor(.clock(CLOCK2_50),
+processor my_processor(.clock(VGA_CTRL_CLK),
                        .reset(1'b0), .memory_read_data(memory_read_data),
 							  .debug_data(index_data),
 							  .debug_addr(debug_write_address_out),
@@ -534,7 +534,7 @@ assign VGA_CLK = VGA_CTRL_CLK;
 /* TODO expand VGA ram to 4294967296 and make it 2 port read and write to ensure refreshing is complete separate from reading. Need to make sure integrated controls here */
 vga_controller vga_ins(.iRST_n(DLY_RST),
                       .iVGA_CLK(VGA_CTRL_CLK),
-							 .processorClk(CLOCK2_50),
+							 .processorClk(VGA_CTRL_CLK),
 							 .data_index_in(index_data),
 							 .data_memory_address_in(debug_write_address_out),
 							 .ctrl_index_write_enable(ctrl_memoryWrite),
