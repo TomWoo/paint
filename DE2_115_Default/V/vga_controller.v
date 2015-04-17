@@ -64,14 +64,7 @@ indexRAM	indexRAM_inst (
 	.q_b(index)
 	);
 	
-	/*
-colorRAM	colorRAM_inst (
-	.address ( index ),
-	.clock ( VGA_CLK_n ),
-	.data(data_color_in),
-	.wren(ctrl_color_write_enable),
-	.q ( bgr_data_raw )
-	);*/
+	
 //////Color table output
 img_index	img_index_inst (
 	.address ( index ),

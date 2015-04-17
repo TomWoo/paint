@@ -48,7 +48,7 @@ module processor(clock, reset, memory_read_data,ctrl_memory_write_enable, ps2_ke
 	
 	//Decode stage wires 
 	wire ctrl_PCSourceSelect_decode,ctrl_registerWriteEnable_decode,ctrl_ALUSrcSelect_decode,ctrl_PCSelect0, ctrl_returnAddrRegWrite_decode, ctrl_PCSelect1, ctrl_regReadAddr2Choice_decode,
-	    ctrl_memoryWriteEnable_decode,ctrl_writeMemToReg_decode,ctrl_executeRtRdSelect_decode;
+	    ctrl_memoryWriteEnable_decode,ctrl_writeMemToReg_decode,ctrl_executeRtRdSelect_decode,ctrl_displayMemoryWriteEnable_decode,ctrl_displayDataMemoryOutputSelect_decode;
 	wire [4:0] opcode_decode,rd_decode,rs_decode,ALUOpcode_decode,regReadAddr2_decode,regWriteIntermediate_decode;
 	wire [16:0] immediate_decode;
 	wire [31:0] branchPC_execute,programCounter_decode,regValA_decode,regValB_decode,regWriteIntermediateData_decode;
@@ -71,22 +71,26 @@ module processor(clock, reset, memory_read_data,ctrl_memory_write_enable, ps2_ke
 	ControlStage control(.opcode_decode(opcode_decode),.opcode_execute(opcode_execute),.aluop_decode(immediate_decode[6:2]),.programCounter_decode(programCounter_decode),
 	                    .opA(aluOperandA_execute),.opB(aluOperandB_execute),.status_execute(status_execute),.ctrl_pcsrc(ctrl_PCSourceSelect_decode),.ctrl_regWrite(ctrl_registerWriteEnable_decode),
 	                    .ctrl_ALUsrc(ctrl_ALUSrcSelect_decode),.ctrl_aluop(ALUOpcode_decode),.ctrl_PCSelect0(ctrl_PCSelect0),
-	                    .ctrl_returnAddrRegWrite_decode(ctrl_returnAddrRegWrite_decode), .ctrl_PCSelect1(ctrl_PCSelect1),.ctrl_regReadAddr2Choice_decode(ctrl_regReadAddr2Choice_decode),.ctrl_statusWrite_execute(ctrl_statusWrite_execute),
-	.ctrl_writeMemToReg_decode(ctrl_writeMemToReg_decode),.ctrl_memoryWriteEnable_decode(ctrl_memoryWriteEnable_decode));
+	                    .ctrl_returnAddrRegWrite_decode(ctrl_returnAddrRegWrite_decode), .ctrl_PCSelect1(ctrl_PCSelect1),.ctrl_regReadAddr2Choice_decode(ctrl_regReadAddr2Choice_decode),
+							  .ctrl_statusWrite_execute(ctrl_statusWrite_execute),
+	.ctrl_writeMemToReg_decode(ctrl_writeMemToReg_decode),.ctrl_memoryWriteEnable_decode(ctrl_memoryWriteEnable_decode),.ctrl_displayMemoryWriteEnable_decode(ctrl_displayMemoryWriteEnable_decode),
+	.ctrl_displayDataMemoryOutputSelect_decode(ctrl_displayDataMemoryOutputSelect_decode));
 	
 	
 	//Detect hazards for the system
 	/*Signal that is 1 if the next stage will use rd as opposed to rt in the ALU*/
-	assign ctrl_executeRtRdSelect_decode = &(instructionData_fetch[31:27]~^5'b00101)|&(instructionData_fetch[31:27]~^5'b01000)|&(instructionData_fetch[31:27]~^5'b00111);
+	assign ctrl_executeRtRdSelect_decode = &(instructionData_fetch[31:27]~^5'b00101)|&(instructionData_fetch[31:27]~^5'b01000)|&(instructionData_fetch[31:27]~^5'b10010)|&(instructionData_fetch[31:27]~^5'b00111)|&(instructionData_fetch[31:27]~^5'b10001);
 	/* A hazard occurs when a load word is being read at decode and (the rs of fetch matches rd of load or if we will use rd and it matches rd decode or if rt will be used and it matches rd of decode)*/
-	assign ctrl_hazard = &(opcode_decode~^5'b01000/*there is lw at decode*/) & (&(instructionData_fetch[21:17]~^rd_decode)/* If rs of fetch matches rd of load */|(ctrl_executeRtRdSelect_decode&(&(instructionData_fetch[26:22]~^rd_decode)))/*If fetch will use rd and it matches the decode rd */|
+	assign ctrl_hazard = (&(opcode_decode~^5'b01000/*there is lw at decode*/)|&(opcode_decode~^5'b10010)) & (&(instructionData_fetch[21:17]~^rd_decode)/* If rs of fetch matches rd of load */|(ctrl_executeRtRdSelect_decode&(&(instructionData_fetch[26:22]~^rd_decode)))/*If fetch will use rd and it matches the decode rd */|
 	                     (~ctrl_executeRtRdSelect_decode&(&(instructionData_fetch[16:12]~^rd_decode))))/*If rt will be used and it matches decode rd*/;
 	
 	//Decode Execute interconnect
-	RegNb #(.n(143))decodeAluInterconnect(.clk(clk),.write_enable(~ctrl_multDivReady_execute),.data({143{~(ctrl_multDivReservedHazard_execute)}}&{opcode_decode,programCounter_decode,regValA_decode,regValB_decode,immediate_decode,ALUOpcode_decode,
-	                                     rd_decode,rs_decode,ctrl_registerWriteEnable_decode,ctrl_ALUSrcSelect_decode,ctrl_writeMemToReg_decode,ctrl_memoryWriteEnable_decode,regReadAddr2_decode}),
+	RegNb #(.n(145))decodeAluInterconnect(.clk(clk),.write_enable(~ctrl_multDivReady_execute),.data({143{~(ctrl_multDivReservedHazard_execute)}}&{opcode_decode,programCounter_decode,regValA_decode,regValB_decode,immediate_decode,ALUOpcode_decode,
+	                                     rd_decode,rs_decode,ctrl_registerWriteEnable_decode,ctrl_ALUSrcSelect_decode,ctrl_writeMemToReg_decode,ctrl_memoryWriteEnable_decode,regReadAddr2_decode,
+													 ctrl_displayMemoryWriteEnable_decode,ctrl_displayDataMemoryOutputSelect_decode}),
 	                              .out({opcode_execute,programCounter_execute,registerAVal_execute,registerBVal_execute,immediate_execute,ALUOpcode_execute,rd_execute,rs_execute,ctrl_registerWriteEnable_execute,
-	 ctrl_ALUSrcSelect_execute,ctrl_writeMemToReg_execute,ctrl_memoryWriteEnable_execute,regReadAddr2_execute}),.reset({ctrl_PCSelect1|ctrl_PCSelect0|reset/*Reset in the case of a new PC selection to drop partial jump*/}));
+	 ctrl_ALUSrcSelect_execute,ctrl_writeMemToReg_execute,ctrl_memoryWriteEnable_execute,regReadAddr2_execute,ctrl_displayMemoryWriteEnable_execute,ctrl_displayDataMemoryOutputSelect_execute}),
+	 .reset({ctrl_PCSelect1|ctrl_PCSelect0|reset/*Reset in the case of a new PC selection to drop partial jump*/}));
 	 
 	//********
 	// Execute 
@@ -94,7 +98,7 @@ module processor(clock, reset, memory_read_data,ctrl_memory_write_enable, ps2_ke
 	
 	//Execute stage wires
 	wire ctrl_registerWriteEnable_execute,ctrl_ALUSrcSelect_execute,ctrl_statusWrite_execute,ctrl_writeMemToReg_execute,ctrl_memoryWriteEnable_execute,ctrl_multDivException_execute,
-	    ctrl_multDivReady_execute,ctrl_multDivReservedHazard_execute;
+	    ctrl_multDivReady_execute,ctrl_multDivReservedHazard_execute,ctrl_displayMemoryWriteEnable_execute,ctrl_displayDataMemoryOutputSelect_execute;
 	wire [4:0] regReadAddr2_execute,opcode_execute,rd_execute,ALUOpcode_execute,rs_execute,multDiv_addr_execute;
 	wire [16:0] immediate_execute;
 	wire [15:0] status_execute;
@@ -130,21 +134,32 @@ module processor(clock, reset, memory_read_data,ctrl_memory_write_enable, ps2_ke
 	                        .out(status_execute),.reset(reset));
 	
 	//Execute-Memory interconnect
-	RegNb #(.n(72))EMInterconnect(.clk(clk),.write_enable(~ctrl_multDivReady_execute),.data({72{~(&(ALUOpcode_execute~^5'b00110)|&(ALUOpcode_execute~^5'b00111))}/* Put a noop in if we've multiplied */}&{aluOutput_execute,rd_execute,ctrl_registerWriteEnable_execute,ctrl_writeMemToReg_execute,aluOperandB_execute,ctrl_memoryWriteEnable_execute}),.out({aluOutput_memory,rd_memory,ctrl_registerWriteEnable_memory,ctrl_writeMemToReg_memory,aluOperandB_memory,ctrl_memoryWriteEnable_memory}),.reset(reset));
+	RegNb #(.n(75))EMInterconnect(.clk(clk),.write_enable(~ctrl_multDivReady_execute),.data({72{~(&(ALUOpcode_execute~^5'b00110)|&(ALUOpcode_execute~^5'b00111)|&(ALUOpcode_execute~^5'b10001))}/* Put a noop in if we've multiplied */}&
+	{aluOutput_execute,rd_execute,ctrl_registerWriteEnable_execute,ctrl_writeMemToReg_execute,aluOperandB_execute,ctrl_memoryWriteEnable_execute,ctrl_displayMemoryWriteEnable_execute,ctrl_displayDataMemoryOutputSelect_execute}),
+	.out({aluOutput_memory,rd_memory,ctrl_registerWriteEnable_memory,ctrl_writeMemToReg_memory,aluOperandB_memory,ctrl_memoryWriteEnable_memory,ctrl_displayMemoryWriteEnable_memory,ctrl_displayDataMemoryOutputSelect_memory}),.reset(reset));
 	
 	//**********
 	// Memory
 	//**********
 	
 	//Put in memory forwarding
-	wire ctrl_registerWriteEnable_memory,ctrl_writeMemToReg_memory, ctrl_memoryWriteEnable_memory;
+	wire ctrl_registerWriteEnable_memory,ctrl_writeMemToReg_memory, ctrl_memoryWriteEnable_memory,ctrl_displayMemoryWriteEnable_memory,ctrl_displayDataMemoryOutputSelect_memory;
 	wire [4:0] rd_memory;
-	wire [31:0] memoryDataIn_memory, aluOperandB_memory, aluOutput_memory, memoryOutput_memory;
+	wire [31:0] memoryDataIn_memory, aluOperandB_memory, aluOutput_memory, memoryOutput_memory,dataMemoryOutput_memory,displayMemoryOutput_memory;
 	Mux2b32w MemoryForwardUnit(.inA(newData_writeback),.inB(aluOperandB_memory),.out(memoryDataIn_memory), 
 	                          .select(&(rd_memory~^regWriteAddr_writeback)&(ctrl_regDataWrite_writeback|ctrl_returnAddrRegWrite_decode)));
+	//Put in a memory output mux to choose between the two memory modules
+	Mux2b32w MemorySelectionUnit(.inA(displayMemoryOutput_memory),.inB(dataMemoryOutput_memory),.out(memoryOutput_memory),.select(ctrl_displayDataMemoryOutputSelect_memory));
 	//Set the memory from external
-		assign memoryOutput_memory = memory_read_data ;
-		assign ctrl_memory_write_enable = ctrl_memoryWriteEnable_memory;
+		assign displayMemoryOutput_memory = memory_read_data ;
+		assign ctrl_memory_write_enable = ctrl_displayMemoryWriteEnable_memory;
+	//Create the data memory
+	dmem DataMemory(
+	.address(aluOutput_memory),
+	.clock(clk),
+	.data(memoryDataIn_memory),
+	.wren(ctrl_memoryWriteEnable_memory),
+	.q(dataMemoryOutput_memory));
 	//Memory writeback interconnect
 	RegNb #(.n(71))MemWBInterconnect(.clk(clk),.write_enable(~ctrl_multDivReady_execute),.data({memoryOutput_memory,aluOutput_memory,rd_memory,ctrl_registerWriteEnable_memory,ctrl_writeMemToReg_memory}),
 	                                .out({memOutput_writeback,aluoutput_writeback,rd_writeback,ctrl_regDataWrite_writeback,ctrl_writeMemToReg_writeback}),.reset(reset));
@@ -196,20 +211,23 @@ endmodule
 // ctrl_regReadAddr2Choice_decode -- a control signal to decide between Rs and Rd (1)
 // ctrl_memoryWriteEnable_decode -- the enable signal for writing to memory (1)
 //-------------------------------------------
-module ControlStage(opcode_decode, opcode_execute, aluop_decode, programCounter_decode, opA,opB, status_execute, ctrl_pcsrc,ctrl_regWrite,ctrl_ALUsrc,ctrl_aluop, ctrl_PCSelect0, ctrl_returnAddrRegWrite_decode, ctrl_PCSelect1,ctrl_regReadAddr2Choice_decode, ctrl_statusWrite_execute,ctrl_writeMemToReg_decode,ctrl_memoryWriteEnable_decode);
+module ControlStage(opcode_decode, opcode_execute, aluop_decode, programCounter_decode, opA,opB, status_execute, ctrl_pcsrc,ctrl_regWrite,ctrl_ALUsrc,ctrl_aluop, ctrl_PCSelect0,
+                    ctrl_returnAddrRegWrite_decode, ctrl_PCSelect1,ctrl_regReadAddr2Choice_decode, ctrl_statusWrite_execute,ctrl_writeMemToReg_decode,ctrl_memoryWriteEnable_decode,
+						  ctrl_displayMemoryWriteEnable_decode,ctrl_displayDataMemoryOutputSelect_decode);
 	input [4:0] opcode_decode, opcode_execute, aluop_decode;
 	input [31:0] opA,opB;
 	input [15:0] status_execute;
 	input [11:0] programCounter_decode;
 	output [4:0] ctrl_aluop;
-	output ctrl_pcsrc,ctrl_regWrite,ctrl_ALUsrc, ctrl_PCSelect0, ctrl_returnAddrRegWrite_decode, ctrl_PCSelect1, ctrl_regReadAddr2Choice_decode, ctrl_statusWrite_execute, ctrl_writeMemToReg_decode,ctrl_memoryWriteEnable_decode;
+	output ctrl_pcsrc,ctrl_regWrite,ctrl_ALUsrc, ctrl_PCSelect0, ctrl_returnAddrRegWrite_decode, ctrl_PCSelect1, ctrl_regReadAddr2Choice_decode, ctrl_statusWrite_execute,
+          ctrl_writeMemToReg_decode,ctrl_memoryWriteEnable_decode, ctrl_displayMemoryWriteEnable_decode,ctrl_displayDataMemoryOutputSelect_decode;
 	wire [31:0] opDifference;
 	// Assign the pcsrc
 	assign ctrl_pcsrc = !opcode_decode[4]&!opcode_decode[3]&!opcode_decode[2]&opcode_decode[0]|!opcode_decode[4]&!opcode_decode[3]&!opcode_decode[2]&opcode_decode[1]|!opcode_decode[4]&!opcode_decode[3]&opcode_decode[2]&!opcode_decode[0]|opcode_decode[4]&!opcode_decode[3]&opcode_decode[2]&opcode_decode[1]&!opcode_decode[0];
 	// Assign whether a register should write
-	assign ctrl_regWrite = !opcode_decode[4]&!opcode_decode[3]&!opcode_decode[2]&!opcode_decode[1]&!opcode_decode[0]|!opcode_decode[4]&!opcode_decode[3]&opcode_decode[2]&!opcode_decode[1]&opcode_decode[0]|!opcode_decode[4]&!opcode_decode[3]&!opcode_decode[2]&opcode_decode[1]&opcode_decode[0]|&(opcode_decode~^5'b01000);
+	assign ctrl_regWrite = !opcode_decode[4]&!opcode_decode[3]&!opcode_decode[2]&!opcode_decode[1]&!opcode_decode[0]|!opcode_decode[4]&!opcode_decode[3]&opcode_decode[2]&!opcode_decode[1]&opcode_decode[0]|!opcode_decode[4]&!opcode_decode[3]&!opcode_decode[2]&opcode_decode[1]&opcode_decode[0]|&(opcode_decode~^5'b01000)|&(opcode_decode~^5'b10010);
 	// Assign the ALU source
-	assign ctrl_ALUsrc = !opcode_decode[4]&!opcode_decode[3]&opcode_decode[2]&!opcode_decode[1]&opcode_decode[0]|!opcode_decode[4]&opcode_decode[3]&!opcode_decode[2]&!opcode_decode[1]&!opcode_decode[0]|!opcode_decode[4]&!opcode_decode[3]&opcode_decode[2]&opcode_decode[1]&opcode_decode[0]|&(opcode_decode~^5'b00111)|&(opcode_decode~^5'b01000);
+	assign ctrl_ALUsrc = !opcode_decode[4]&!opcode_decode[3]&opcode_decode[2]&!opcode_decode[1]&opcode_decode[0]|!opcode_decode[4]&opcode_decode[3]&!opcode_decode[2]&!opcode_decode[1]&!opcode_decode[0]|!opcode_decode[4]&!opcode_decode[3]&opcode_decode[2]&opcode_decode[1]&opcode_decode[0]|&(opcode_decode~^5'b00111)|&(opcode_decode~^5'b10001)|&(opcode_decode~^5'b01000)|&(opcode_decode~^5'b10010);
 	// Assign additional ALU functions
 	assign ctrl_aluop = ({5{&(opcode_decode~^5'b00000)}}&aluop_decode) | ({5{&(opcode_decode~^5'b00101)}}&5'b00000);
 	// Choose whether to choose a new program counter
@@ -220,13 +238,17 @@ module ControlStage(opcode_decode, opcode_execute, aluop_decode, programCounter_
 	CLAadder controlAdder(.a(opB),.b(opA),.subtract(1'b1),.sum(opDifference));
 	assign ctrl_PCSelect1 = (&(opcode_execute~^5'b00010)&|opDifference)/* Not Equals */| (&(opcode_execute~^5'b10110)&(|status_execute)/*Branch exception*/) | (&(opcode_execute~^5'b00110)&opDifference[31])/* Less Than */|(&(opcode_execute~^5'b10110)&(|status_execute))|&(opcode_execute~^5'b00100)/* jr*/;
 	// Choose between Rs and Rd
-	assign ctrl_regReadAddr2Choice_decode = &(opcode_decode~^5'b00010)|&(opcode_decode~^5'b10110) | &(opcode_decode~^5'b00110)|&(opcode_decode~^5'b00100)|&(opcode_decode~^5'b00111);
+	assign ctrl_regReadAddr2Choice_decode = &(opcode_decode~^5'b00010)|&(opcode_decode~^5'b10110) | &(opcode_decode~^5'b00110)|&(opcode_decode~^5'b00100)|&(opcode_decode~^5'b00111)|&(opcode_decode~^5'b10001);
 	// Choose whether to write to status_execute
 	assign ctrl_statusWrite_execute = &(opcode_execute~^5'b10101);
-	// Choose whether to write to memory
-	assign ctrl_writeMemToReg_decode = &(opcode_decode~^5'b01000);
+	// Choose whether to write memory to registers
+	assign ctrl_writeMemToReg_decode = &(opcode_decode~^5'b01000)|&(opcode_decode~^5'b10010);
 	// Choose write enabling
 	assign ctrl_memoryWriteEnable_decode = (&(opcode_decode~^5'b00111));
+	// Choose write enabling for display memory
+	assign ctrl_displayMemoryWriteEnable_decode = &(opcode_decode~^5'b10001);
+	//Choose between the output selection of display memory or data memory
+	assign ctrl_displayDataMemoryOutputSelect_decode = &(opcode_decode~^5'b10001)|&(opcode_decode~^5'b10010);
 	
 	
 endmodule

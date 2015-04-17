@@ -544,14 +544,4 @@ vga_controller vga_ins(.iRST_n(DLY_RST),
                       .b_data(VGA_B),
                       .g_data(VGA_G),
                       .r_data(VGA_R));
-							 
-
-LCD_TEST 			u5	(	//	Host Side
-							.iCLK(CLOCK_50),
-							.iRST_N(DLY_RST),
-							//	LCD Side
-							.LCD_DATA(LCD_D_1),
-							.LCD_RW(LCD_RW_1),
-							.LCD_EN(LCD_EN_1),
-							.LCD_RS(LCD_RS_1) );
 endmodule
