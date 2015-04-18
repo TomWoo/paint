@@ -52,8 +52,8 @@ assign VGA_CLK_n = ~iVGA_CLK;
 
 indexRAM	indexRAM_inst (
 	.clock_a(VGA_CLK_n),
-	.address_a(addr_index_in/*TODO: change bit-width*/),
-	.data_a(data_index_in/*TODO: change bit-width*/),
+	.address_a(addr_index_in),
+	.data_a(data_index_in),
 	.wren_a(ctrl_index_write_enable),
 	.q_a(data_memory_out),
 	.clock_b(iVGA_CLK),

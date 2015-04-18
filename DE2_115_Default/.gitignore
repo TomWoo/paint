@@ -54,7 +54,7 @@
 *.sdc
 *.tcl
 *.pin
-#*.mif
+*.mif
 *.hex
 
 # ignore Quartus II generated folders
