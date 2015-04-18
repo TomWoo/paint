@@ -1,46 +1,3 @@
-// ============================================================================
-// Copyright (c) 2012 by Terasic Technologies Inc.
-// ============================================================================
-//
-// Permission:
-//
-//   Terasic grants permission to use and modify this code for use
-//   in synthesis for all Terasic Development Boards and Altera Development 
-//   Kits made by Terasic.  Other use of this code, including the selling 
-//   ,duplication, or modification of any portion is strictly prohibited.
-//
-// Disclaimer:
-//
-//   This VHDL/Verilog or C/C++ source code is intended as a design reference
-//   which illustrates how these types of functions can be implemented.
-//   It is the user's responsibility to verify their design for
-//   consistency and functionality through the use of formal
-//   verification methods.  Terasic provides no warranty regarding the use 
-//   or functionality of this code.
-//
-// ============================================================================
-//           
-//  Terasic Technologies Inc
-//  9F., No.176, Sec.2, Gongdao 5th Rd, East Dist, Hsinchu City, 30070. Taiwan
-//
-//
-//
-//                     web: http://www.terasic.com/
-//                     email: support@terasic.com
-//
-// ============================================================================
-//
-// Major Functions:	DE2_115_Default
-//
-// ============================================================================
-//
-// Revision History :
-// ============================================================================
-//   Ver  :| Author              :| Mod. Date :| Changes Made:
-//   V1.1 :| HdHuang             :| 05/12/10  :| Initial Revision
-//   V2.0 :| Eko       				:| 05/23/12  :| version 11.1
-// ============================================================================
-
 module DE2_115_Default(
 
 	//////// CLOCK //////////
@@ -553,60 +510,39 @@ assign	LEDR			=	{	Cont[25:23],Cont[25:23],Cont[25:23],
 assign	LEDG			=	{	Cont[25:23],Cont[25:23],Cont[25:23]	};
 
 
-//	7 segment LUT
-SEG7_LUT_8 			u0	(	.oSEG0(HEX0),
-							.oSEG1(HEX1),
-							.oSEG2(HEX2),
-							.oSEG3(HEX3),
-							.oSEG4(HEX4),
-							.oSEG5(HEX5),
-							.oSEG6(HEX6),
-							.oSEG7(HEX7),
-							.iDIG(mSEG7_DIG) );
-
 //	Reset Delay Timer
 Reset_Delay			r0	(	.iCLK(CLOCK_50),.oRESET(DLY_RST)	);
 
 VGA_Audio_PLL 		p1	(	.areset(~DLY_RST),.inclk0(CLOCK2_50),.c0(VGA_CTRL_CLK),.c1(AUD_CTRL_CLK),.c2(mVGA_CLK)	);
 
+//processor here
+wire[31:0] debug_data,debug_write_address_out;
+wire[31:0] data_index, read_data;
+wire ctrl_memoryWrite;
+
+processor my_processor(.clock(VGA_CTRL_CLK/*TODO perhaps use a button as a clock to debug */),
+                       .reset(1'b0),
+							  .memory_read_data(read_data),
+							  .debug_data(data_index),
+							  .debug_addr(debug_write_address_out),
+							  .ctrl_memory_write_enable(ctrl_memoryWrite));
+
+
 //	VGA Controller
 //assign VGA_BLANK_N = !cDEN;
 assign VGA_CLK = VGA_CTRL_CLK;
+
+/* TODO expand VGA ram to 4294967296 and make it 2 port read and write to ensure refreshing is complete separate from reading. Need to make sure integrated controls here */
 vga_controller vga_ins(.iRST_n(DLY_RST),
                       .iVGA_CLK(VGA_CTRL_CLK),
+							 .addr_index_in(debug_write_address_out),
+							 .data_index_in(data_index),
+							 .ctrl_index_write_enable(ctrl_memoryWrite),
+							 .data_memory_out(read_data),
                       .oBLANK_n(VGA_BLANK_N),
                       .oHS(VGA_HS),
                       .oVS(VGA_VS),
                       .b_data(VGA_B),
                       .g_data(VGA_G),
                       .r_data(VGA_R));
-					
-//	Audio CODEC and video decoder setting
-I2C_AV_Config 		u3	(	//	Host Side
-							.iCLK(CLOCK_50),
-							.iRST_N(KEY[0]),
-							//	I2C Side
-							.I2C_SCLK(I2C_SCLK),
-							.I2C_SDAT(I2C_SDAT)	);
-
-AUDIO_DAC 			u4	(	//	Audio Side
-							.oAUD_BCK(AUD_BCLK),
-							.oAUD_DATA(AUD_DACDAT),
-							.oAUD_LRCK(AUD_DACLRCK),
-							//	Control Signals
-							.iSrc_Select(SW[17]),
-				         .iCLK_18_4(AUD_CTRL_CLK),
-							.iRST_N(DLY_RST)	);
-
-
-LCD_TEST 			u5	(	//	Host Side
-							.iCLK(CLOCK_50),
-							.iRST_N(DLY_RST),
-							//	LCD Side
-							.LCD_DATA(LCD_D_1),
-							.LCD_RW(LCD_RW_1),
-							.LCD_EN(LCD_EN_1),
-							.LCD_RS(LCD_RS_1)	);
-
-
 endmodule
