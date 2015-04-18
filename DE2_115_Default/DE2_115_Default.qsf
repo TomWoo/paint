@@ -611,7 +611,7 @@ set_location_assignment PIN_B7 -to I2C_SCLK
 set_location_assignment PIN_A8 -to I2C_SDAT
 set_global_assignment -name CYCLONEII_RESERVE_NCEO_AFTER_CONFIGURATION "USE AS REGULAR IO"
 set_global_assignment -name SMART_RECOMPILE ON
-set_global_assignment -name NUM_PARALLEL_PROCESSORS 2
+set_global_assignment -name NUM_PARALLEL_PROCESSORS ALL
 set_location_assignment PIN_AF27 -to HSMC_D[3]
 set_location_assignment PIN_AB28 -to SW[0]
 set_location_assignment PIN_AD15 -to GPIO[8]
@@ -669,6 +669,29 @@ set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
 set_global_assignment -name MISC_FILE DE2_115_Default.dpf
 set_global_assignment -name EDA_SIMULATION_TOOL "ModelSim-Altera (Verilog)"
 set_global_assignment -name EDA_OUTPUT_DATA_FORMAT "VERILOG HDL" -section_id eda_simulation
+set_global_assignment -name QIP_FILE imem.qip
+set_global_assignment -name VERILOG_FILE imem.v
+set_global_assignment -name SDC_FILE de2_115_default.sdc
+set_global_assignment -name QIP_FILE img_index.qip
+set_global_assignment -name QIP_FILE img_data.qip
+set_global_assignment -name QIP_FILE colorRAM.qip
+set_global_assignment -name VERILOG_FILE test.v
+set_global_assignment -name VERILOG_FILE processor.v
+set_global_assignment -name VERILOG_FILE indexRAM.v
+set_global_assignment -name VERILOG_FILE colorRAM.v
+set_global_assignment -name VERILOG_FILE V/video_sync_generator.v
+set_global_assignment -name VERILOG_FILE V/vga_controller.v
+set_global_assignment -name VERILOG_FILE V/VGA_Audio_PLL.v
+set_global_assignment -name VERILOG_FILE V/Reset_Delay.v
+set_global_assignment -name VERILOG_FILE V/img_index.v
+set_global_assignment -name VERILOG_FILE V/img_data.v
+set_global_assignment -name SDC_FILE de2_115_default.SDC
+set_global_assignment -name VERILOG_FILE DE2_115_Default.v
+set_global_assignment -name SOURCE_FILE db/DE2_115_Default.cmp.rdb
+set_global_assignment -name QIP_FILE indexRAM.qip
+set_global_assignment -name VECTOR_WAVEFORM_FILE processor.vwf
+set_global_assignment -name EDA_NETLIST_WRITER_OUTPUT_DIR "C:/Users/Tom/Desktop/paint/DE2_115_Default/simulation/qsim/" -section_id eda_simulation
+set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST ON -section_id eda_simulation
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
 set_global_assignment -name LL_ROOT_REGION ON -section_id "Root Region"
@@ -1199,24 +1222,5 @@ set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to ENET1_LINK100
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to ENETCLK_25
 set_instance_assignment -name IO_MAXIMUM_TOGGLE_RATE "0 MHz" -to HEX3[1]
 set_instance_assignment -name IO_MAXIMUM_TOGGLE_RATE "0 MHz" -to HEX3[0]
-set_global_assignment -name QIP_FILE imem.qip
-set_global_assignment -name VERILOG_FILE imem.v
-set_global_assignment -name SDC_FILE de2_115_default.sdc
-set_global_assignment -name QIP_FILE img_index.qip
-set_global_assignment -name QIP_FILE img_data.qip
-set_global_assignment -name QIP_FILE colorRAM.qip
-set_global_assignment -name VERILOG_FILE test.v
-set_global_assignment -name VERILOG_FILE processor.v
-set_global_assignment -name VERILOG_FILE indexRAM.v
-set_global_assignment -name VERILOG_FILE colorRAM.v
-set_global_assignment -name VERILOG_FILE V/video_sync_generator.v
-set_global_assignment -name VERILOG_FILE V/vga_controller.v
-set_global_assignment -name VERILOG_FILE V/VGA_Audio_PLL.v
-set_global_assignment -name VERILOG_FILE V/Reset_Delay.v
-set_global_assignment -name VERILOG_FILE V/img_index.v
-set_global_assignment -name VERILOG_FILE V/img_data.v
-set_global_assignment -name SDC_FILE de2_115_default.SDC
-set_global_assignment -name VERILOG_FILE DE2_115_Default.v
-set_global_assignment -name SOURCE_FILE db/DE2_115_Default.cmp.rdb
-set_global_assignment -name QIP_FILE indexRAM.qip
+set_global_assignment -name SEARCH_PATH "c:\\users\\tom\\desktop\\paint\\de2_115_ps2_demo"
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

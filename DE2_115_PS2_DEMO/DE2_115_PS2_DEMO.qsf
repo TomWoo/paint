@@ -6,7 +6,7 @@ set_global_assignment -name FAMILY "Cyclone IV E"
 set_global_assignment -name DEVICE EP4CE115F29C7
 set_global_assignment -name TOP_LEVEL_ENTITY DE2_115_PS2_DEMO
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 9.1
-set_global_assignment -name LAST_QUARTUS_VERSION 14.1.0
+set_global_assignment -name LAST_QUARTUS_VERSION 13.1
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "14:02:28 JANUARY 27,2010"
 
 #============================================================
@@ -580,12 +580,10 @@ set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
 set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
 set_global_assignment -name NOMINAL_CORE_SUPPLY_VOLTAGE 1.2V
 set_global_assignment -name STRATIX_DEVICE_IO_STANDARD "3.3-V LVTTL"
-set_global_assignment -name MISC_FILE "D:/svn/de2_115_golden_sopc/de2_115_golden_sopc.dpf"
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
 set_global_assignment -name LL_ROOT_REGION ON -section_id "Root Region"
 set_global_assignment -name LL_MEMBER_STATE LOCKED -section_id "Root Region"
-set_global_assignment -name MISC_FILE "D:/Document/de2c4/de2_115_golden_sopc/de2_115_golden_sopc.dpf"
 set_location_assignment PIN_A17 -to ENET0_GTX_CLK
 set_location_assignment PIN_A21 -to ENET0_INT_N
 set_location_assignment PIN_C20 -to ENET0_MDC
@@ -1117,7 +1115,6 @@ set_instance_assignment -name IO_STANDARD LVDS -to HSMC_CLKIN_P1
 set_instance_assignment -name IO_STANDARD LVDS -to HSMC_CLKIN_N1
 set_instance_assignment -name IO_STANDARD "3.0-V LVTTL" -to HSMC_CLKIN0
 set_global_assignment -name CYCLONEII_RESERVE_NCEO_AFTER_CONFIGURATION "USE AS REGULAR IO"
-set_global_assignment -name MISC_FILE "D:/Projects/DE2C4/trunk/test/de2_115_golden_sopc/de2_115_golden_sopc.dpf"
 set_global_assignment -name SMART_RECOMPILE ON
 set_global_assignment -name NUM_PARALLEL_PROCESSORS 2
 set_instance_assignment -name IO_MAXIMUM_TOGGLE_RATE "0 MHz" -to HEX2
@@ -1178,10 +1175,10 @@ set_location_assignment PIN_A10 -to VGA_B[1]
 set_location_assignment PIN_H12 -to VGA_G[3]
 set_global_assignment -name TIMEQUEST_MULTICORNER_ANALYSIS ON
 set_global_assignment -name TIMEQUEST_DO_CCPP_REMOVAL ON
-set_global_assignment -name MISC_FILE "E:/SVN/DE2_115/trunk/ref_design/DE2_115_PS2_DEMO/DE2_115_PS2_DEMO.dpf"
 set_global_assignment -name USE_CONFIGURATION_DEVICE ON
 set_global_assignment -name CYCLONEIII_CONFIGURATION_DEVICE EPCS64
 
 set_global_assignment -name SDC_FILE de2_115_golden_sopc.SDC
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name MISC_FILE DE2_115_PS2_DEMO.dpf
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

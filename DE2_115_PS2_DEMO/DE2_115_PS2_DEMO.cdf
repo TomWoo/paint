@@ -4,7 +4,7 @@ JedecChain;
 	DefaultMfr(6E);
 
 	P ActionCode(Cfg)
-		Device PartName(EP4CE115F29) Path("C:/Users/Tom/Google Drive/Duke/paint/DE2_115_Default/") File("DE2_115_Default.sof") MfrSpec(OpMask(1));
+		Device PartName(EP4CE115F29) Path("C:/Users/Tom/Google Drive/Duke/paint/DE2_115_PS2_DEMO/") File("DE2_115_PS2_DEMO.sof") MfrSpec(OpMask(1));
 
 ChainEnd;
 

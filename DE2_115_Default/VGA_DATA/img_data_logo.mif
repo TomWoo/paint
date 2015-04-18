@@ -7,5 +7,5 @@ DATA_RADIX = HEX;
 CONTENT BEGIN
 [0281..04ff]:03;
 [0500..05ff]:02;
-[0600..105ff]:05;
+[0600..4afff]:05;
 END;
