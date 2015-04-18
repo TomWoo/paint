@@ -76,7 +76,6 @@ ret
 
 ## End color toggling code
 
-
 ## Begin cursor drawing code
 
 updateCursor: # Updates the cursor location. If the cursor has moved, fills in old space
@@ -106,8 +105,14 @@ addi $r27, $r27, 1 # increment the stack pointer
 
 #Then draw the new cursor
 custi1 $r2, $r25, 0 # fill the location of the current cursor with a color
+
+#If the pen is down, fill the space where the pen used to be with the drawing color
+addi $r5, $r0, 1
+blt $r26, $r5, updateOldCursor #If the pen down value is 0 or less, don't store the pixel value
+custi1 $r24, $r29, 0 #Otherwise, set the previous pixel's value to be the color value that we are writing
+#TODO for bigger line widths, just modify the fill code to fill the color instead of the old color  and take off the above line
 #Set the old cursor value to be the current cursor value
-addi $r24, $r25,0
+updateOldCursor: addi $r24, $r25,0
 ret
 
 ## End cursor drawing code
@@ -130,21 +135,45 @@ j checkedInput
 checkDown:
 addi $r1, $r0, 36
 bne $r30, $r1, checkLeft
-addi $r25, $r25, +640 #down
+addi $r25, $r25, 640 #down
 j checkedInput
 checkLeft:
 addi $r1, $r0, 22
 bne $r30, $r1, checkRight
 addi $r25, $r25, -1 #left
 j checkedInput
+
 checkRight:
 addi $r1, $r0, 40
-bne $r30, $r1, checkedInput
+bne $r30, $r1, checkInsert
 addi $r25, $r25, 1 #right
+j checkedInput
+
+checkInsert:
+addi $r1, $r0, 32
+bne $r30, $r1, checkHome
+#If we pressed insert, toggle whether the pen is down or not
+bne $r26, $r0, setPenUp
+addi $r26, $r0, 1
+j checkedInput
+setPenUp: addi $r26, $r0,0
+j checkedInput
+
+checkHome:
+addi $r1, $r0, 24
+bne $r30, $r1, checkedInput
+#If we pressed home, increment the color that we are drawing with the pen
+addi $r27, $r27, 1 # Increment the stack pointer
+sw $r31, 0($r27) #store the return address
+jal incrementColor
+lw $r31, 0($r27) #load the return address
+addi $r27, $r27, -1 # Decrement the stack pointer
+j checkedInput
+
 checkedInput:
 add $r22, $r30, $r0 # set last pressed key
-blt $r25, $r3, wrapBegin2End # if $r25<25600, add number of usable pixels
-blt $r2, $r25, wrapEnd2Begin # if $r25>307200, subtract number of usable pixels
+blt $r25, $r3, wrapBegin2End # if $r25<25600, add number of usable pixels. Too high up
+blt $r2, $r25, wrapEnd2Begin # if $r25>307200, subtract number of usable pixels. Too low down
 ret # else return
 wrapBegin2End: add $r25, $r25, $r4
 ret
