@@ -1,5 +1,7 @@
 .text
-# Register assignments
+
+## Register assignments
+
 # $r0  - 0
 # $r1  - volatile
 # $r2  - volatile
@@ -19,11 +21,14 @@
 # $r29 - drawing color
 # $r30 - keyboard input
 # $r31 - return address
+# The stack pointer will be used solely for remembering previous pixel state. This may change.
 
 ## Begin initialization routine
 
 init:
 lw $r27, memBegin($r0) # initialize the stack pointer
+lw $r27, memBegin($r0) # initialize the frame pointer
+addi $r25, $r0, 2500 # set the initial pointer position (this position is currently arbitrary)
 j test # change this to choose which loop to jump to
 ## End initialization routine
 
@@ -73,9 +78,20 @@ ret
 
 ## Begin cursor drawing code
 
-drawCursor: # Draws the cursor. If the cursor has moved, fills in the old pixel color
-# TODO complete this
+updateCursor: # Updates the cursor location. If the cursor has moved, fills in old space
+bne $r25, $r26, drawCursor # If the current position doesn't equal the old position, draw the cursor
 ret
+
+
+drawCursor:
+ #First fill in old cursor area with data from memory
+#While we haven't emptied the cursor stack, pop off a pixel and write it to the display
+
+
+#Then draw the new cursor
+draw
+ret
+
 
 
 ## End cursor drawing code
