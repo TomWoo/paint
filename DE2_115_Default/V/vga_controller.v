@@ -3,6 +3,7 @@ module vga_controller(iRST_n,
 							 addr_index_in,
 							 data_index_in,
 							 ctrl_index_write_enable,
+							 data_memory_out,
                       oBLANK_n,
                       oHS,
                       oVS,
@@ -18,7 +19,8 @@ output reg oHS;
 output reg oVS;
 output [7:0] b_data;
 output [7:0] g_data;  
-output [7:0] r_data;                        
+output [7:0] r_data; 
+output [31:0] data_memory_out;                       
 ///////// ////                     
 reg [18:0] ADDR;
 reg [23:0] bgr_data;
@@ -47,17 +49,13 @@ end
 //////////////////////////
 //////INDEX addr.
 assign VGA_CLK_n = ~iVGA_CLK;
-/*
-img_data	img_data_inst (
-	.address ( ADDR ),
-	.clock ( VGA_CLK_n ),
-	.q ( index )
-	);*/
+
 indexRAM	indexRAM_inst (
 	.clock_a(VGA_CLK_n),
 	.address_a(addr_index_in/*TODO: change bit-width*/),
 	.data_a(data_index_in/*TODO: change bit-width*/),
 	.wren_a(ctrl_index_write_enable),
+	.q_a(data_memory_out),
 	.clock_b(iVGA_CLK),
 	.address_b(ADDR),
 	.wren_b(1'b0),

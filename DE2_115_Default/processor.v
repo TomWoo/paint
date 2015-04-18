@@ -3,7 +3,7 @@
 //SECTION : Processor
 //
 //*******************************************************************************************************************
-module processor(clock, reset, memory_read_data,ctrl_memory_write_enable, ps2_key_pressed, ps2_out, lcd_write, lcd_data, debug_data, debug_addr);
+module processor(clock, reset, memory_read_data,ctrl_memory_write_enable, ps2_key_pressed, ps2_out, lcd_write, lcd_data, debug_data, debug_addr,debug_pc,debug_pc_change,debug_opcode_execute,debug_status);
 
 	input 	clock, reset, ps2_key_pressed;
 	input [31:0] memory_read_data; /* The data read from memory */
@@ -14,6 +14,16 @@ module processor(clock, reset, memory_read_data,ctrl_memory_write_enable, ps2_ke
 	// GRADER OUTPUTS - YOU MUST CONNECT TO YOUR DMEM
 	output 	[31:0] 	debug_data;
 	output	[31:0]	debug_addr;
+	
+	//testing outputs. TODO remove these
+	output [31:0] debug_pc;
+	assign debug_pc = programCounter_fetch;
+	output [1:0] debug_pc_change;
+	assign debug_pc_change = {ctrl_PCSelect1,ctrl_PCSelect0};
+	output [4:0] debug_opcode_execute;
+	assign debug_opcode_execute = opcode_execute;
+	output [10:0] debug_status;
+	assign debug_status = status_execute;
 
 	//Global Control wires
 	wire ctrl_hazard;
@@ -85,7 +95,7 @@ module processor(clock, reset, memory_read_data,ctrl_memory_write_enable, ps2_ke
 	                     (~ctrl_executeRtRdSelect_decode&(&(instructionData_fetch[16:12]~^rd_decode))))/*If rt will be used and it matches decode rd*/;
 	
 	//Decode Execute interconnect
-	RegNb #(.n(145))decodeAluInterconnect(.clk(clk),.write_enable(~ctrl_multDivReady_execute),.data({143{~(ctrl_multDivReservedHazard_execute)}}&{opcode_decode,programCounter_decode,regValA_decode,regValB_decode,immediate_decode,ALUOpcode_decode,
+	RegNb #(.n(147))decodeAluInterconnect(.clk(clk),.write_enable(~ctrl_multDivReady_execute),.data({147{~(ctrl_multDivReservedHazard_execute)}}&{opcode_decode,programCounter_decode,regValA_decode,regValB_decode,immediate_decode,ALUOpcode_decode,
 	                                     rd_decode,rs_decode,ctrl_registerWriteEnable_decode,ctrl_ALUSrcSelect_decode,ctrl_writeMemToReg_decode,ctrl_memoryWriteEnable_decode,regReadAddr2_decode,
 													 ctrl_displayMemoryWriteEnable_decode,ctrl_displayDataMemoryOutputSelect_decode}),
 	                              .out({opcode_execute,programCounter_execute,registerAVal_execute,registerBVal_execute,immediate_execute,ALUOpcode_execute,rd_execute,rs_execute,ctrl_registerWriteEnable_execute,
