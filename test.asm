@@ -1,5 +1,5 @@
-.text
-main: addi $r1, $r0, 20
+.text addi $r1, $r0, 20
+#comment
 addi $r2, $r0, 10
 add $r3, $r2, $r1
 sub $r4, $r2,$r1
