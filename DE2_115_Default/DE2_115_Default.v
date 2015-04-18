@@ -532,7 +532,6 @@ processor my_processor(.clock(VGA_CTRL_CLK/*TODO perhaps use a button as a clock
 //assign VGA_BLANK_N = !cDEN;
 assign VGA_CLK = VGA_CTRL_CLK;
 
-/* TODO expand VGA ram to 4294967296 and make it 2 port read and write to ensure refreshing is complete separate from reading. Need to make sure integrated controls here */
 vga_controller vga_ins(.iRST_n(DLY_RST),
                       .iVGA_CLK(VGA_CTRL_CLK),
 							 .addr_index_in(debug_write_address_out),
