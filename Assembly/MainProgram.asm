@@ -121,7 +121,6 @@ ret
 ## Start keyboard button checking
 
 checkKeys:
-#TODO check for a key to change the drawing color/whether a pen is up or down
 bne $r22, $r30, continueChecking # check for change in input
 ret # if not, do nothing
 continueChecking:
@@ -143,10 +142,34 @@ addi $r1, $r0, 22
 bne $r30, $r1, checkRight
 addi $r25, $r25, -1 #left
 j checkedInput
+
 checkRight:
 addi $r1, $r0, 40
-bne $r30, $r1, checkedInput
+bne $r30, $r1, checkInsert
 addi $r25, $r25, 1 #right
+j checkedInput
+
+checkInsert:
+addi $r1, $r0, 32
+bne $r30, $r1, checkHome
+#If we pressed insert, toggle whether the pen is down or not
+bne $r26, $r0, setPenUp
+addi $r26, $r0, 1
+j checkedInput
+setPenUp: addi $r26, $r0,0
+j checkedInput
+
+checkHome:
+addi $r1, $r0, 24
+bne $r30, $r1, checkedInput
+#If we pressed home, increment the color that we are drawing with the pen
+addi $r27, $r27, 1 # Increment the stack pointer
+sw $r31, 0($r27) #store the return address
+jal incrementColor
+lw $r31, 0($r27) #load the return address
+addi $r27, $r27, -1 # Decrement the stack pointer
+j checkedInput
+
 checkedInput:
 add $r22, $r30, $r0 # set last pressed key
 blt $r25, $r3, wrapBegin2End # if $r25<25600, add number of usable pixels. Too high up
