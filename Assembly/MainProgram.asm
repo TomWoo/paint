@@ -105,8 +105,14 @@ addi $r27, $r27, 1 # increment the stack pointer
 
 #Then draw the new cursor
 custi1 $r2, $r25, 0 # fill the location of the current cursor with a color
+
+#If the pen is down, fill the space where the pen used to be with the drawing color
+addi $r5, $r0, 1
+blt $r26, $r5, updateOldCursor #If the pen down value is 0 or less, don't store the pixel value
+custi1 $r24, $r29, 0 #Otherwise, set the previous pixel's value to be the color value that we are writing
+#TODO for bigger line widths, just modify the fill code to fill the color instead of the old color  and take off the above line
 #Set the old cursor value to be the current cursor value
-addi $r24, $r25,0
+updateOldCursor: addi $r24, $r25,0
 ret
 
 ## End cursor drawing code
@@ -115,7 +121,8 @@ ret
 ## Start keyboard button checking
 
 checkKeys:
-bne $r22, $r25, continueChecking # check for change in input
+#TODO check for a key to change the drawing color/whether a pen is up or down
+bne $r22, $r30, continueChecking # check for change in input
 ret # if not, do nothing
 continueChecking:
 lw $r2, maxPixelIndex($r0) # $r2 = 307200
@@ -124,12 +131,12 @@ sub $r4, $r2, $r3 # $r4 = 307200 - 25600 = max number of usable pixels
 checkUp:
 addi $r1, $r0, 42
 bne $r30, $r1, checkDown
-addi $r25, $r25, 640 #up
+addi $r25, $r25, -640 #up
 j checkedInput
 checkDown:
 addi $r1, $r0, 36
 bne $r30, $r1, checkLeft
-addi $r25, $r25, -640 #down
+addi $r25, $r25, 640 #down
 j checkedInput
 checkLeft:
 addi $r1, $r0, 22
@@ -141,14 +148,13 @@ addi $r1, $r0, 40
 bne $r30, $r1, checkedInput
 addi $r25, $r25, 1 #right
 checkedInput:
-add $r22, $r25, $r0 # set last pressed key
-blt $r30, $r3, wrapBegin2End # if $r30<25600, add number of usable pixels
+add $r22, $r30, $r0 # set last pressed key
+blt $r25, $r3, wrapBegin2End # if $r25<25600, add number of usable pixels. Too high up
+blt $r2, $r25, wrapEnd2Begin # if $r25>307200, subtract number of usable pixels. Too low down
 ret # else return
-blt $r2, $r30, wrapEnd2Begin # if $r30>307200, subtract number of usable pixels
-ret # else return
-wrapBegin2End: add $r30, $r30, $r4
+wrapBegin2End: add $r25, $r25, $r4
 ret
-wrapEnd2Begin: sub $r30, $r30, $r4
+wrapEnd2Begin: sub $r25, $r25, $r4
 ret
 
 ## End keyboard button checking
