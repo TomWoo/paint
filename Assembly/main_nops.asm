@@ -130,7 +130,7 @@ nop
 nop
 nop
 nop
-blt $r29, $r1, 2 # If the drawing color is less than the number of colors, increment the drawing color
+blt $r29, $r1, addincthing # If the drawing color is less than the number of colors, increment the drawing color
 nop
 nop
 nop
@@ -145,7 +145,7 @@ nop
 nop
 nop
 nop
-addi $r29, $r29, 1 
+addincthing: addi $r29, $r29, 1 
 nop
 nop
 nop
@@ -255,12 +255,22 @@ nop
 nop
 nop
 nop
-custi1 $r2, $r25, 0 # fill the location of the current cursor with a color
+addi $r3, $r0, 1
 nop
 nop
 nop
 nop
-ret
+bne $r3, $r26, noDrawCursor
+nop
+nop
+nop
+nop
+custi1 $r29, $r25, 0 # fill the location of the current cursor with a color
+nop
+nop
+nop
+nop
+noDrawCursor:ret
 nop
 nop
 nop
@@ -510,27 +520,27 @@ nop
 nop
 nop
 nop
-addi $r27, $r27, 1 # Increment the stack pointer
+lw $r1, numColors($r0) # Load the number of colors
 nop
 nop
 nop
 nop
-sw $r31, 0($r27) #store the return address
+blt $r29, $r1, addincthing # If the drawing color is less than the number of colors, increment the drawing color
 nop
 nop
 nop
 nop
-jal incrementColor
+addi $r29, $r0, 0# Otherwise set the drawing color to 0
 nop
 nop
 nop
 nop
-lw $r31, 0($r27) #load the return address
+j checkedInput
 nop
 nop
 nop
 nop
-addi $r27, $r27, -1 # Decrement the stack pointer
+addincthing: addi $r29, $r29, 1 
 nop
 nop
 nop
@@ -593,13 +603,12 @@ nop
 
 ## End keyboard button checking
 .data
-numColors: .word 0x8 #8 colors currently supported ROYGBV + Brown + Black
+numColors: .word 12 #12 colors currently supported ROYGBV + Brown + Black
 cursorColor: .word 0x2 #The color index currently being used for the cursor color
 pixelMemBegin: .word 0x00010000 # A pointer to the beginning of the pixel memory segment of the program
 programMemBegin: .word 0x00001000 #A pointer to the beginning of the program memory segment
 maxPixelIndex: .word 0x4b000 # Constant 640*480 = 307200
 numReservedPixels: .word 0x6400 # Constant 640*40 = 25600 (40 rows)
 topFeatureDimension: .word 30 #Dimensions of top feature
-colorLineLocation: .word 32 # the location of the color line 
-
+colorLineLocation: .word 32 # the location of the color line
 
