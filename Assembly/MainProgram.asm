@@ -35,6 +35,7 @@ lw $r28, pixelMemBegin($r0) # initialize the frame pointer
 lw $r23,  programMemBegin($r0) # initialize the program flow stack pointer
 addi $r25, $r0, 2500 # set the initial pointer position (this position is currently arbitrary)
 jal populateTopMenu
+jal drawSelectedLine
 j test # change this to choose which loop to jump to
 ## End initialization routine
 
@@ -43,6 +44,7 @@ j test # change this to choose which loop to jump to
 test:
 jal checkKeys
 jal updateCursor
+#jal drawSelectedLine
 j test
 
 ## End test program flow
@@ -192,7 +194,7 @@ lw $r5, topFeatureDimension($r0) # Load the dimension of the top feature
 addi $r1, $r0, 0 # Counter for the current drawing color index
 addi $r3, $r0, 0 # Counter for the current pixel in the row
 addi $r4, $r0, 0 # Counter for the count within a square
-addi $r6, $r0, 1920 # Counter for the current row pixel start position. Start on row 4
+addi $r6, $r0, 2560 # Counter for the current row pixel start position. Start on row 4
 add $r8, $r5, $r5 # make 2* the top feature dimension so we know when to change the color
 drawLine: blt $r2,$r1, finishLineDraw # If we've passed the max # of colors, the line is finished
 addi $r3, $r0, 0 # Zero the counter for the inter-row count
@@ -220,14 +222,48 @@ addi $r4, $r4, 1 #increment our count within our color
 j colorLine
 # Draw alternating empty pixels for the feature size followed by color pixels for the feature size
 finishLineDraw:
-addi $r6, $r6, 480 # Move to the next row
+addi $r6, $r6, 640 # Move to the next row
 addi $r1, $r0, 0# Reset our color count
-addi $r9, $r0, 480
+addi $r9, $r0, 640
 mul $r9, $r5, $r9
 blt $r6, $r9, drawLine # If we are less than our max pixel count, keep drawing the line
 ret
 
 ## End top menu population
+
+## Draw a selected line depending on what color is being drawn
+
+drawSelectedLine:
+#First clear all the pixels in the selected row. Then draw the line underneath the selected color
+addi $r1, $r0, 15360 # the starting pixel of the selected row
+addi $r2, $r0, 640 # the number of pixels in a row
+addi $r3, $r0, 0 # Zero the pixel we're currently on
+blackRow: blt $r3, $r2, writeBlack #Write the black row
+ret
+j selectedLineDrawing
+writeBlack:
+add $r4, $r3, $r1 # Find our current location
+custi1 $r0, $r4, 0 # Write black into the location
+addi $r3, $r3, 1 # Increment our position in our current row
+j blackRow
+selectedLineDrawing: # Draw the selected line
+# First figure out our starting position. Then draw the color for 30 pixels
+lw $r5, topFeatureDimension($r0) # Load the top feature dimension 
+addi $r6, $r0, 60 # Get the dimension. Possible TODO make this better
+mul $r6, $r29, $r6 # Multiply that dimension by the color that we've selected
+add $r6, $r6, $r5 # Add that number to the pixel location to get the offset of black
+add $r6, $r5, $r1 # Add this to our current position to get our pixel coordinate
+addi $r7, $r0, 1 # Start our indexing
+addi $r8, $r0, 3 # Choose the line color
+beginColorLineThing: bgt $r7, $r5, doneColorLineThing # Draw our 30 pixels then we done
+custi1 $r8, $r6, 0 #Store our line color in a pixel
+addi $r7, $r7, 1 #Increment our counter
+addi $r6, $r6, 1 # Increment our pixel location
+j beginColorLineThing
+doneColorLineThing:
+ret
+
+## End draw selected line
 
 .data
 numColors: .word 0x8 #8 colors currently supported ROYGBV + Brown + Black
@@ -237,4 +273,5 @@ programMemBegin: .word 0x00001000 #A pointer to the beginning of the program mem
 maxPixelIndex: .word 0x4b000 # Constant 640*480 = 307200
 numReservedPixels: .word 0x6400 # Constant 640*40 = 25600 (40 rows)
 topFeatureDimension: .word 30 #Dimensions of top feature
+colorLineLocation: .word 32 # the location of the color line 
 
