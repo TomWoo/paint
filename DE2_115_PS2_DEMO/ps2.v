@@ -1,42 +1,6 @@
-//
-// Permission:
-//
-//   Terasic grants permission to use and modify this code for use
-//   in synthesis for all Terasic Development Boards and Altera Development 
-//   Kits made by Terasic.  Other use of this code, including the selling 
-//   ,duplication, or modification of any portion is strictly prohibited.
-//
-// Disclaimer:
-//
-//   This VHDL/Verilog or C/C++ source code is intended as a design reference
-//   which illustrates how these types of functions can be implemented.
-//   It is the user's responsibility to verify their design for
-//   consistency and functionality through the use of formal
-//   verification methods.  Terasic provides no warranty regarding the use 
-//   or functionality of this code.
-//
-// --------------------------------------------------------------------
-//           
-//                     Terasic Technologies Inc
-//                     356 Fu-Shin E. Rd Sec. 1. JhuBei City,
-//                     HsinChu County, Taiwan
-//                     302
-//
-//                     web: http://www.terasic.com/
-//                     email: support@terasic.com
-//
-// --------------------------------------------------------------------
-//
-// Major Functions:	DE2_115_PS2 Mouse Controller 
-//
-// --------------------------------------------------------------------
-//
-// Revision History :
-// --------------------------------------------------------------------
-//   Ver  :| Author                    :| Mod. Date :| Changes Made:
-//   V1.0 :| Johnny FAN,HdHuang        :| 05/16/10  :| Initial Revision
-// --------------------------------------------------------------------
 module ps2(
+		ps2_dat_in,
+		shift_reg,
            iSTART,   //press the button for transmitting instrucions to device;
            iRST_n,   //FSM reset signal;
            iCLK_50,  //clock source;
@@ -69,6 +33,9 @@ output [6:0] oX_MOV1;
 output [6:0] oX_MOV2;
 output [6:0] oY_MOV1;
 output [6:0] oY_MOV2;
+
+output ps2_dat_in;
+output[32:0] shift_reg;
 
 //instantiation
 SEG7_LUT U1(.oSEG(oX_MOV1),.iDIG(x_latch[3:0]));
@@ -252,11 +219,3 @@ begin
      cur_state <= nex_state;
 end
 endmodule
-
-
-     
-
-
-     
-
-

@@ -42,7 +42,6 @@
 // ============================================================================
 
 module DE2_115_PS2_DEMO(
-
 	//////// CLOCK //////////
 	CLOCK_50,
    CLOCK2_50,
@@ -236,7 +235,6 @@ module DE2_115_PS2_DEMO(
 //=======================================================
 //  PARAMETER declarations
 //=======================================================
-
 
 //=======================================================
 //  PORT declarations
@@ -524,11 +522,16 @@ assign ENET1_TX_ER = ENET1_TX_CLK;
 assign TD_RESET_N = TD_VS;
 assign action = FL_RY & TD_HS & TD_CLK27 & (TD_DATA == 8'hff);
 
+wire ps2_data_bit;
+wire[32:0] shift_register;
 ///////////////////////////////////////////
 //ps2
 //////////////////////////////////////
 ///intantiation
- ps2 U1(.iSTART(KEY[0]),  //press the button for transmitting instrucions to device;
+ ps2 U1(
+		.ps2_dat_in(ps2_data_bit),
+		.shift_reg(shift_register),
+			  .iSTART(KEY[0]),  //press the button for transmitting instrucions to device;
            .iRST_n(KEY[1]),  //global reset signal;
            .iCLK_50(CLOCK_50),  //clock source;
            .PS2_CLK(PS2_CLK), //ps2_clock signal inout;
@@ -541,4 +544,6 @@ assign action = FL_RY & TD_HS & TD_CLK27 & (TD_DATA == 8'hff);
            .oY_MOV1(HEX2),  //lower SEG of mouse displacement display for Y axis.
            .oY_MOV2(HEX3)); //higher SEG of mouse displacement display for Y axis.
 
+assign LEDR[17] = ps2_data_bit;
+assign LEDR[16:0] = shift_register[16:0];
 endmodule

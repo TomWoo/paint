@@ -502,20 +502,36 @@ assign	SD_DAT		=	4'bz;
 
 assign	AUD_XCK	    =	AUD_CTRL_CLK;
 assign	AUD_ADCLRCK	=	AUD_DACLRCK;
-
+/*
 assign	mSEG7_DIG	=	{	Cont[27:24],Cont[27:24],Cont[27:24],Cont[27:24],
 							Cont[27:24],Cont[27:24],Cont[27:24],Cont[27:24]	};
 assign	LEDR			=	{	Cont[25:23],Cont[25:23],Cont[25:23],
 							Cont[25:23],Cont[25:23],Cont[25:23]	};
 assign	LEDG			=	{	Cont[25:23],Cont[25:23],Cont[25:23]	};
-
+*/
 
 //	Reset Delay Timer
 Reset_Delay			r0	(	.iCLK(CLOCK_50),.oRESET(DLY_RST)	);
 
 VGA_Audio_PLL 		p1	(	.areset(~DLY_RST),.inclk0(CLOCK2_50),.c0(VGA_CTRL_CLK),.c1(AUD_CTRL_CLK),.c2(mVGA_CLK)	);
 
-//processor here
+
+// Keyboard input
+wire[32:0] key_pressed;
+/*TODO: handle single key-press detection*/
+ps2 keyboard_input(
+		.shift_reg(key_pressed),
+			  .iSTART(KEY[0]),  //press the button for transmitting instrucions to device;
+           .iRST_n(KEY[1]),  //global reset signal;
+           .iCLK_50(CLOCK_50),  //clock source;
+           .PS2_CLK(PS2_CLK), //ps2_clock signal inout;
+           .PS2_DAT(PS2_DAT), //ps2_data  signal inout;
+);
+wire [31:0] pixel_pos;
+assign pixel_pos = {26'b0,key_pressed[5:0]};
+assign LEDR = pixel_pos[17:0];
+
+// Processor
 wire[31:0] debug_data,debug_write_address_out;
 wire[31:0] data_index, read_data;
 wire ctrl_memoryWrite;
@@ -525,7 +541,9 @@ processor my_processor(.clock(VGA_CTRL_CLK/*TODO perhaps use a button as a clock
 							  .memory_read_data(read_data),
 							  .debug_data(data_index),
 							  .debug_addr(debug_write_address_out),
-							  .ctrl_memory_write_enable(ctrl_memoryWrite));
+							  .ctrl_memory_write_enable(ctrl_memoryWrite),
+							  .pixel_data_in(pixel_pos), // Set $r30 to 6 LSBs of key signature pattern
+);
 
 
 //	VGA Controller
