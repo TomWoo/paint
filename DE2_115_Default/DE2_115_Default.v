@@ -516,26 +516,58 @@ VGA_Audio_PLL 		p1	(	.areset(~DLY_RST),.inclk0(CLOCK2_50),.c0(VGA_CTRL_CLK),.c1(
 
 
 // Keyboard input
-wire[32:0] key_pressed;
+//wire[32:0] key_pressed;
 /*TODO: handle single key-press detection*/
-ps2 keyboard_input(
+/*ps2 keyboard_input(
 		.shift_reg(key_pressed),
 			  .iSTART(KEY[0]),  //press the button for transmitting instrucions to device;
            .iRST_n(KEY[1]),  //global reset signal;
            .iCLK_50(CLOCK_50),  //clock source;
            .PS2_CLK(PS2_CLK), //ps2_clock signal inout;
            .PS2_DAT(PS2_DAT), //ps2_data  signal inout;
-);
+);*/
+
+wire keyboard_sysclk;
+reg [31:0] VGA_CLKo;
+	always @( posedge CLOCK_50 )
+		begin
+			VGA_CLKo <= VGA_CLKo + 1;
+		end
+	assign keyboard_sysclk = VGA_CLKo[12];
+	
+wire 			 [7:0]		scan_code;
+wire 				   		key1_on;
+wire 					   	key2_on;
+wire 			 [7:0]		key1_code;
+wire 			 [7:0]		key2_code;
+
+	ps2_keyboard keyboard( 						  
+								 .iCLK_50  ( CLOCK_50),  		  //clock source;
+							    .ps2_dat  ( PS2_DAT ),		  //ps2bus data  		
+								 .ps2_clk  ( PS2_CLK ),		  //ps2bus clk      	
+								 .sys_clk  ( keyboard_sysclk ),  //system clock		
+								 .reset    ( KEY[3] ), 		  //system reset		
+								 .reset1   ( KEY[2] ),			  //keyboard reset	
+								 .scandata ( scan_code ),		  //scan code    		
+								 .key1_on  ( key1_on ),		  //key1 triger
+								 .key2_on  ( key2_on ),		  //key2 triger
+								 .key1_code( key1_code ),		  //key1 code
+								 .key2_code( key2_code ) 		  //key2 code
+								);
 wire [31:0] pixel_pos;
-assign pixel_pos = {26'b0,key_pressed[5:0]};
-assign LEDR = pixel_pos[17:0];
+assign pixel_pos = {26'b0,scan_code};
+assign LEDG[7:0] = scan_code;//pixel_pos[17:0];
+assign LEDR[17:10] = key1_code;
+assign LEDR[7:0] = key2_code;
+assign LEDR[9] = key1_on;
+assign LEDR[8] = key2_on;
 
 // Processor
 wire[31:0] debug_data,debug_write_address_out;
 wire[31:0] data_index, read_data;
 wire ctrl_memoryWrite;
 
-processor my_processor(.clock(VGA_CTRL_CLK/*TODO perhaps use a button as a clock to debug */),
+processor my_processor(.clock(VGA_CTRL_CLK),
                        .reset(1'b0),
 							  .memory_read_data(read_data),
 							  .debug_data(data_index),
