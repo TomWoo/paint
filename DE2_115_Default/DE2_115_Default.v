@@ -1,5 +1,4 @@
 module DE2_115_Default(
-
 	//////// CLOCK //////////
 	CLOCK_50,
    CLOCK2_50,
