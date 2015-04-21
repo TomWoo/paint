@@ -5,7 +5,7 @@ ADDRESS_RADIX = HEX;
 DATA_RADIX = HEX;
 
 CONTENT BEGIN
-[00..01]:000000;
+[00..01]:ffffff;
 [02..03]:0000ff;
 [04..05]:0088ff;
 [06..07]:00ffff;
@@ -14,5 +14,6 @@ CONTENT BEGIN
 [0c..0d]:880088;
 [0e..0f]:13458B;
 [10..11]:888888;
-[12..13]:ffffff;
+[12..13]:000000;
+[14..15]:cccccc;
 END;

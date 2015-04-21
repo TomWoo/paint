@@ -5,6 +5,9 @@ ADDRESS_RADIX = HEX;
 DATA_RADIX = HEX;
 
 CONTENT BEGIN
+[0..617f]:15;
 [6180..63ff]:13;
+[6400..469ff]:01;
 [46a00..46c7f]:13;
+[46c80..4afff]:15;
 END;

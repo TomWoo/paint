@@ -1,0 +1,221 @@
+
+## Pre-load color selection top-bar
+# $r1 = 640
+# $r2 = 20
+# $r3 = 640*20 = 12800
+# $r4 = color of square
+# $r5 = index of square center
+# $r6 = index of square sides
+addi $r1, $r0, 640
+addi $r2, $r0, 20
+mul $r3, $r1, $r2
+
+#black
+addi $r5, $r3, 176
+addi $r4, $r3, 0x01
+jal drawSquare
+
+#red
+addi $r5, $r5, 32
+addi $r4, $r3, 0x03
+jal drawSquare
+
+#orange
+addi $r5, $r5, 32
+addi $r4, $r3, 0x05
+jal drawSquare
+
+#yellow
+addi $r5, $r5, 32
+addi $r4, $r3, 0x07
+jal drawSquare
+
+#green
+addi $r5, $r5, 32
+addi $r4, $r3, 0x09
+jal drawSquare
+
+#blue
+addi $r5, $r5, 32
+addi $r4, $r3, 0x0b
+jal drawSquare
+
+#violet
+addi $r5, $r5, 32
+addi $r4, $r3, 0x0d
+jal drawSquare
+
+#brown
+addi $r5, $r5, 32
+addi $r4, $r3, 0x0f
+jal drawSquare
+
+#gray
+addi $r5, $r5, 32
+addi $r4, $r3, 0x11
+jal drawSquare
+
+#white
+addi $r5, $r5, 32
+addi $r4, $r3, 0x13
+jal drawSquare
+
+j endPreloading
+
+drawSquare:
+#center
+custi1 $r4, $r5, 0
+#top
+custi1 $r4, $r5, -641
+custi1 $r4, $r5, -640
+custi1 $r4, $r5, -639
+#left/right
+custi1 $r4, $r5, -1
+custi1 $r4, $r5, 1
+#bottom
+custi1 $r4, $r5, 639
+custi1 $r4, $r5, 640
+custi1 $r4, $r5, 641
+ret
+
+endPreloading:
+
+# end top-bar pre-loading routine
+
+
+
+
+
+## Begin color square selection
+# $r1 = underline color
+# $r2 = color index for checking
+# $r3 = center index of underline
+# $r5 = 640
+# $r6 = 20
+
+colorSelect:
+addi $r5, $r0, 640
+addi $r6, $r0, 20
+mul $r3, $r5, $r6 # index of first color = 12800
+
+setSelectorColor:
+bne $r26, $r0, setBlack # if pen down == 1, set color to be black
+addi $r1, $r0, 0
+j checkSelectedColor
+setBlack:
+addi $r1, $r0, 0x13
+j checkSelectedColor
+
+checkSelectedColor:
+# check white
+addi $r2, $r0, 0x01
+bne $r29, $r2, checkRed
+addi $r3, $r0, 176
+j underline
+
+checkRed:
+addi $r2, $r0, 0x03
+bne $r29, $r2, checkOrange
+addi $r3, $r3, 32
+j underline
+
+checkOrange:
+addi $r2, $r0, 0x05
+bne $r29, $r2, checkYellow
+addi $r3, $r3, 32
+j underline
+
+checkYellow:
+addi $r2, $r0, 0x07
+bne $r29, $r2, checkGreen
+addi $r3, $r3, 32
+j underline
+
+checkGreen:
+addi $r2, $r0, 0x09
+bne $r29, $r2, checkBlue
+addi $r3, $r3, 32
+j underline
+
+checkBlue:
+addi $r2, $r0, 0x0b
+bne $r29, $r2, checkViolet
+addi $r3, $r3, 32
+j underline
+
+checkViolet:
+addi $r2, $r0, 0x0d
+bne $r29, $r2, checkBrown
+addi $r3, $r3, 32
+j underline
+
+checkBrown:
+addi $r2, $r0, 0x0f
+bne $r29, $r2, checkGray
+addi $r3, $r3, 32
+j underline
+
+checkGray:
+addi $r2, $r0, 0x11
+bne $r29, $r2, checkBlack
+addi $r3, $r3, 32
+j underline
+
+# check black -- otherwise case
+checkBlack:
+addi $r3, $r3, 32
+j underline
+
+underline:
+custi1 $r1, $r3, -2
+custi1 $r1, $r3, -1
+custi1 $r1, $r3, 0
+custi1 $r1, $r3, 1
+custi1 $r1, $r3, 2
+j endUnderlining
+
+endUnderlining:
+
+# end color square selection
+
+
+
+## Begin color square selection
+# $r1 = underline color
+# $r2 = offset from pixel 0
+# $r3 = center index of underline
+# $r4 = 32 -- gap between consecutive squares
+# $r5 = 640
+# $r6 = 24
+# $r7 = result of gap multiplication
+
+colorSelect:
+addi $r4, $r0, 32
+addi $r5, $r0, 640
+addi $r6, $r0, 24 # row
+
+setSelectorColor:
+bne $r26, $r0, setBlack # if pen down == 1, set color to be black
+addi $r1, $r0, 0
+j setUnderlinePos
+setBlack:
+addi $r1, $r0, 0x13
+j setUnderlinePos
+
+setUnderlinePos: # draw underline
+mul $r7, $r29, $r4 # determine pixels for gap
+addi $r2, $r7, 240 # offset from the left
+mul $r12, $r5, $r6 # 640*24
+add $r3, $r12, $r2 # final position
+j underline
+
+underline:
+custi1 $r1, $r3, -2
+custi1 $r1, $r3, -1
+custi1 $r1, $r3, 0
+custi1 $r1, $r3, 1
+custi1 $r1, $r3, 2
+j endUnderlining
+
+endUnderlining:
+ret

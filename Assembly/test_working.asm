@@ -13,11 +13,13 @@
 # $r8  - computation parameter 1
 # $r9  - computation parameter 2
 # $r10 - computation result
+# $r11 - old pixel pos/color
+# $r12 - volatile
 # $r22 - previous keyboard input
 # $r23 - program flow stack pointer
 # $r24 - old pointer location
 # $r25 - current pointer location
-# $r26 - pen down (indicates whether to draw a pixel or not
+# $r26 - pen down (indicates whether to draw a pixel or not)
 # $r27 - stack pointer
 # $r28 - frame pointer
 # $r29 - drawing color
@@ -26,6 +28,91 @@
 # The stack pointer will be used solely for remembering previous pixel state. This may change.
 # Pixels are stored in the following format [25:8] = Pixel index (Address), [7:0] = color index
 # The custi1 and custi2 operations are used for storing to the display and loading from the display memory, respectively
+
+
+## Pre-load color selection top-bar
+# $r1 = 640
+# $r2 = 20
+# $r3 = 640*20 = 12800
+# $r4 = color of square
+# $r5 = index of square center
+# $r6 = index of square sides
+addi $r1, $r0, 640
+addi $r2, $r0, 20
+mul $r3, $r1, $r2
+
+#black
+addi $r5, $r3, 176
+addi $r4, $r3, 0x01
+jal drawSquare
+
+#red
+addi $r5, $r5, 32
+addi $r4, $r3, 0x03
+jal drawSquare
+
+#orange
+addi $r5, $r5, 32
+addi $r4, $r3, 0x05
+jal drawSquare
+
+#yellow
+addi $r5, $r5, 32
+addi $r4, $r3, 0x07
+jal drawSquare
+
+#green
+addi $r5, $r5, 32
+addi $r4, $r3, 0x09
+jal drawSquare
+
+#blue
+addi $r5, $r5, 32
+addi $r4, $r3, 0x0b
+jal drawSquare
+
+#violet
+addi $r5, $r5, 32
+addi $r4, $r3, 0x0d
+jal drawSquare
+
+#brown
+addi $r5, $r5, 32
+addi $r4, $r3, 0x0f
+jal drawSquare
+
+#gray
+addi $r5, $r5, 32
+addi $r4, $r3, 0x11
+jal drawSquare
+
+#white
+addi $r5, $r5, 32
+addi $r4, $r3, 0x13
+jal drawSquare
+
+j endPreloading
+
+drawSquare:
+#center
+custi1 $r4, $r5, 0
+#top
+custi1 $r4, $r5, -641
+custi1 $r4, $r5, -640
+custi1 $r4, $r5, -639
+#left/right
+custi1 $r4, $r5, -1
+custi1 $r4, $r5, 1
+#bottom
+custi1 $r4, $r5, 639
+custi1 $r4, $r5, 640
+custi1 $r4, $r5, 641
+ret
+
+endPreloading:
+
+# end top-bar pre-loading routine
+
 
 ## Begin initialization routine
 
@@ -48,11 +135,23 @@ nop
 nop
 nop
 nop
-addi $r25, $r0, 64500 # set the initial pointer position (this position is currently arbitrary) # -- changed from dec
+addi $r1, $r0, 320
 nop
 nop
 nop
-addi $r24, $r0, 64499 # set initial old pointer position (this position is currently arbitrary) # -- changed from dec
+nop
+addi $r2, $r0, 481
+nop
+nop
+nop
+nop
+mul $r25, $r1, $r2
+#addi $r25, $r0, 64500 # set the initial pointer position (this position is currently arbitrary) # -- changed from dec
+nop
+nop
+nop
+nop
+addi $r24, $r25, -1 # set initial old pointer position (this position is currently arbitrary) # -- changed from dec
 nop
 nop
 nop
@@ -108,6 +207,11 @@ nop
 nop
 nop
 #jal drawSelectedLine
+nop
+nop
+nop
+nop
+jal colorSelect
 nop
 nop
 nop
@@ -193,7 +297,7 @@ nop
 nop
 nop
 #lw $r1, numColors($r0) # Load the number of colors
-addi $r1, $r0, 20 # -- changed
+addi $r1, $r0, 19 # -- changed
 nop
 nop
 nop
@@ -284,17 +388,7 @@ nop
 nop
 nop
 nop
-fillOld: blt $r27, $r28, doneFilling # if our current stack pointer is less than the frame pointer, we're done
-nop
-nop
-nop
-nop
-lw $r2, 0($r27) # Load the pixel at our current stack pointer
-nop
-nop
-nop
-nop
-sra $r3, $r2, 8 # Extract the pixel address
+sra $r3, $r11, 8 # Extract the pixel address
 nop
 nop
 nop
@@ -304,7 +398,7 @@ nop
 nop
 nop
 nop
-or $r4, $r2, $r5 # Extract the color index of the pixel
+and $r4, $r11, $r5 # Extract the color index of the pixel
 nop
 nop
 nop
@@ -314,33 +408,7 @@ nop
 nop
 nop
 nop
-addi $r27,$r27,-1 # Subtract 1 from the stack pointer
-nop
-nop
-nop
-nop
-j fillOld
-nop
-nop
-nop
-nop
-
-nop
-nop
-nop
-nop
 doneFilling: # If we're done filling in the old cursor, fill in the new cursor
-nop
-nop
-nop
-nop
-addi $r27, $r28, 0 # set our stack pointer to the frame pointer
-nop
-nop
-nop
-nop
-#lw $r2, cursorColor($r0) # load the cursor color
-addi $r2, $r0, 2 # -- changed
 nop
 nop
 nop
@@ -350,27 +418,12 @@ nop
 nop
 nop
 nop
-sll $r4, $r25, 8 # shift over the pixel address
+sll $r11, $r25, 8 # shift over the pixel address
 nop
 nop
 nop
 nop
-or $r4, $r4, $r3 # or the bits together to create the pixel representation
-nop
-nop
-nop
-nop
-sw $r4, 0($r27) # store the pixel onto the stack
-nop
-nop
-nop
-nop
-addi $r27, $r27, 1 # increment the stack pointer
-nop
-nop
-nop
-nop
-
+or $r11, $r11, $r3 # or the bits together to create the pixel representation
 nop
 nop
 nop
@@ -385,7 +438,8 @@ nop
 nop
 nop
 nop
-
+#Set the old cursor value to be the current cursor value
+custi1 $r29, $r25, 0 # fill the location of the current cursor with a color
 nop
 nop
 nop
@@ -415,13 +469,11 @@ nop
 nop
 nop
 nop
-#Set the old cursor value to be the current cursor value
-custi1 $r29, $r25, 0 # fill the location of the current cursor with a color
 nop
 nop
 nop
 nop
-updateOldCursor: addi $r24, $r25,0
+updateOldCursor: addi $r24, $r25, 0
 nop
 nop
 nop
@@ -653,8 +705,24 @@ nop
 nop
 nop
 nop
+addi $r4, $r0, 32
+addi $r5, $r0, 640
+addi $r6, $r0, 24 # row
+mul $r12, $r5, $r6 # 640*24
+addi $r1, $r0, 0x14
+addi $r7, $r0, 2
+div $r7, $r29, $r7
+mul $r7, $r7, $r4 # determine pixels for gap
+addi $r2, $r7, 176 # offset from the left
+add $r3, $r12, $r2 # final position
+custi1 $r1, $r3, -2
+custi1 $r1, $r3, -1
+custi1 $r1, $r3, 0
+custi1 $r1, $r3, 1
+custi1 $r1, $r3, 2
+
 #lw $r1, numColors($r0) # Load the number of colors
-addi $r1, $r0, 20 # -- changed
+addi $r1, $r0, 19 # -- changed
 nop
 nop
 nop
@@ -723,6 +791,7 @@ nop
 nop
 nop
 nop
+custi1 $r29, $r25, 0 # fill the location of the current cursor with a color
 ret # else return
 nop
 nop
@@ -733,6 +802,7 @@ nop
 nop
 nop
 nop
+custi1 $r29, $r25, 0 # fill the location of the current cursor with a color
 ret
 nop
 nop
@@ -743,6 +813,7 @@ nop
 nop
 nop
 nop
+custi1 $r29, $r25, 0 # fill the location of the current cursor with a color
 ret
 nop
 nop
@@ -754,6 +825,52 @@ nop
 nop
 nop
 ## End keyboard button checking
+
+
+## Begin color square selection
+# $r1 = underline color
+# $r2 = offset from pixel 0
+# $r3 = center index of underline
+# $r4 = 32 -- gap between consecutive squares
+# $r5 = 640
+# $r6 = 24
+# $r7 = result of gap multiplication
+
+colorSelect:
+addi $r4, $r0, 32
+addi $r5, $r0, 640
+addi $r6, $r0, 24 # row
+# r7 is counter
+mul $r12, $r5, $r6 # 640*24
+
+
+setSelectorColor:
+bne $r26, $r0, setBlack # if pen down == 1, set color to be black
+addi $r1, $r0, 0
+j setUnderlinePos
+setBlack:
+addi $r1, $r0, 0x13
+j setUnderlinePos
+
+setUnderlinePos: # draw underline
+addi $r7, $r0, 2
+div $r7, $r29, $r7
+mul $r7, $r7, $r4 # determine pixels for gap
+addi $r2, $r7, 176 # offset from the left
+add $r3, $r12, $r2 # final position
+j underline
+
+underline:
+custi1 $r1, $r3, -2
+custi1 $r1, $r3, -1
+custi1 $r1, $r3, 0
+custi1 $r1, $r3, 1
+custi1 $r1, $r3, 2
+j endUnderlining
+
+endUnderlining:
+ret
+
 
 .data
 numColors: .word 20 #10 colors currently supported ROYGBV + Brown + Black

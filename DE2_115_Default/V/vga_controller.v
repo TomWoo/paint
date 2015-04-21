@@ -55,7 +55,7 @@ indexRAM	indexRAM_inst (
 	.address_a(addr_index_in),
 	.data_a(data_index_in),
 	.wren_a(ctrl_index_write_enable),
-	.q_a(data_memory_out),
+	.q_a(data_memory_out[7:0]),
 	.clock_b(iVGA_CLK),
 	.address_b(ADDR),
 	.wren_b(1'b0),

@@ -3,7 +3,8 @@
 //SECTION : Processor
 //
 //*******************************************************************************************************************
-module processor(clock, reset, memory_read_data,ctrl_memory_write_enable, ps2_key_pressed, ps2_out, lcd_write, lcd_data, debug_data, debug_addr,debug_pc,debug_pc_change,debug_opcode_execute,debug_status, pixel_data_in, regist30_out);
+module processor(clock, reset, memory_read_data,ctrl_memory_write_enable, ps2_key_pressed, ps2_out, lcd_write, lcd_data, debug_data,
+                 debug_addr,debug_pc,debug_pc_change,debug_opcode_execute,debug_status, pixel_data_in, regist30_out,reg11);
 	input [31:0] pixel_data_in; /*Direct input to $r30*/
 	output [31:0] regist30_out;
 
@@ -25,6 +26,7 @@ module processor(clock, reset, memory_read_data,ctrl_memory_write_enable, ps2_ke
 	output [4:0] debug_opcode_execute;
 	assign debug_opcode_execute = opcode_execute;
 	output [10:0] debug_status;
+	output [17:0] reg11;
 	assign debug_status = status_execute;
 
 	//Global Control wires
@@ -68,7 +70,7 @@ module processor(clock, reset, memory_read_data,ctrl_memory_write_enable, ps2_ke
 	//The decode stage
 	DecodeStage decodeStage(.clk(clk), .ctrl_readReg1(rs_decode), .ctrl_readReg2(regReadAddr2_decode), .ctrl_writeReg(regWriteAddr_writeback), .data_a(regValA_decode), .data_b(regValB_decode),
                         	.data_writeData(newData_writeback),.ctrl_enable(ctrl_multDivReady_execute|ctrl_regDataWrite_writeback|ctrl_returnAddrRegWrite_decode/*Enable writing if we're writing in the writeback stage or if we're writing a return address*/),.ctrl_reset(reset),
-									.pixel_data_in(pixel_data_in),.regist30_out(regist30_out));
+									.pixel_data_in(pixel_data_in),.regist30_out(regist30_out),.reg11(reg11));
 	// put a mux to select between rt and rd as a source for the register reading
 	Mux2b32w RtSelection(.inB(immediate_decode[16:12]),.inA(rd_decode),.out(regReadAddr2_decode),.select(ctrl_regReadAddr2Choice_decode));
 	// put a mux on the register writeback data that chooses between the original writeback info, the data read from memory, and the old PC for stuff like JAL
@@ -146,7 +148,7 @@ module processor(clock, reset, memory_read_data,ctrl_memory_write_enable, ps2_ke
 	                        .out(status_execute),.reset(reset));
 	
 	//Execute-Memory interconnect
-	RegNb #(.n(75))EMInterconnect(.clk(clk),.write_enable(~ctrl_multDivReady_execute),.data({72{~(&(ALUOpcode_execute~^5'b00110)|&(ALUOpcode_execute~^5'b00111)|&(ALUOpcode_execute~^5'b10001))}/* Put a noop in if we've multiplied */}&
+	RegNb #(.n(80))EMInterconnect(.clk(clk),.write_enable(~ctrl_multDivReady_execute),.data({80{~(&(ALUOpcode_execute~^5'b00110)|&(ALUOpcode_execute~^5'b00111)|&(ALUOpcode_execute~^5'b10001))}/* Put a noop in if we've multiplied */}&
 	{aluOutput_execute,rd_execute,ctrl_registerWriteEnable_execute,ctrl_writeMemToReg_execute,aluOperandB_execute,ctrl_memoryWriteEnable_execute,ctrl_displayMemoryWriteEnable_execute,ctrl_displayDataMemoryOutputSelect_execute}),
 	.out({aluOutput_memory,rd_memory,ctrl_registerWriteEnable_memory,ctrl_writeMemToReg_memory,aluOperandB_memory,ctrl_memoryWriteEnable_memory,ctrl_displayMemoryWriteEnable_memory,ctrl_displayDataMemoryOutputSelect_memory}),.reset(reset));
 	
@@ -260,7 +262,7 @@ module ControlStage(opcode_decode, opcode_execute, aluop_decode, programCounter_
 	// Choose write enabling for display memory
 	assign ctrl_displayMemoryWriteEnable_decode = &(opcode_decode~^5'b10001);
 	//Choose between the output selection of display memory or data memory
-	assign ctrl_displayDataMemoryOutputSelect_decode = &(opcode_decode~^5'b10001)|&(opcode_decode~^5'b10010);
+	assign ctrl_displayDataMemoryOutputSelect_decode = &(opcode_decode~^5'b10010);
 	
 	
 endmodule
@@ -318,9 +320,10 @@ endmodule
 // ctrl_enable -- the enable signal for the stage (1)
 // ctrl_reset -- the reset signal for the stage (1)
 //-------------------------------------------
-module DecodeStage(clk, ctrl_readReg1, ctrl_readReg2, ctrl_writeReg, data_a, data_b, data_writeData, ctrl_enable, ctrl_reset, pixel_data_in, regist30_out);
+module DecodeStage(clk, ctrl_readReg1, ctrl_readReg2, ctrl_writeReg, data_a, data_b, data_writeData, ctrl_enable, ctrl_reset, pixel_data_in, regist30_out,reg11);
 	input [31:0] pixel_data_in;
 	output [31:0] regist30_out;
+	output [11:0] reg11;
 	
 	input clk, ctrl_enable, ctrl_reset;
 	input [4:0] ctrl_readReg1, ctrl_readReg2, ctrl_writeReg;
@@ -330,7 +333,7 @@ module DecodeStage(clk, ctrl_readReg1, ctrl_readReg2, ctrl_writeReg, data_a, dat
 	// Make the register file
 	regfile registerFile(.clock(clk), .ctrl_memoryWriteEnable_decode(ctrl_enable), .ctrl_reset(ctrl_reset), .ctrl_writeReg(ctrl_writeReg),
 	.ctrl_readRegA(ctrl_readReg1), .ctrl_readRegB(ctrl_readReg2), .data_writeReg(data_writeData), .data_readRegA(data_a), .data_readRegB(data_b),
-	.pixel_data_in(pixel_data_in), .regist30_out(regist30_out));	
+	.pixel_data_in(pixel_data_in), .regist30_out(regist30_out),.reg11(reg11));	
 	
 endmodule
 
@@ -516,9 +519,10 @@ endmodule
 // data_readRegA -- read A register data (32 bits wide)
 // data_readRegB -- read B register data (32 bits wide)
 //-----------------------------------------------
-module regfile(clock, ctrl_memoryWriteEnable_decode, ctrl_reset, ctrl_writeReg, ctrl_readRegA, ctrl_readRegB, data_writeReg, data_readRegA, data_readRegB, pixel_data_in, regist30_out);
+module regfile(clock, ctrl_memoryWriteEnable_decode, ctrl_reset, ctrl_writeReg, ctrl_readRegA, ctrl_readRegB, data_writeReg, data_readRegA, data_readRegB, pixel_data_in, regist30_out,reg11);
 	input [31:0] pixel_data_in;/*Direct input to $r30*/
 	output [31:0] regist30_out;
+	output [17:0]reg11;
 	
    input clock, ctrl_memoryWriteEnable_decode, ctrl_reset;
    input [4:0] ctrl_writeReg, ctrl_readRegA, ctrl_readRegB;
@@ -543,6 +547,8 @@ module regfile(clock, ctrl_memoryWriteEnable_decode, ctrl_reset, ctrl_writeReg, 
 			Reg32b regist30(.clk(!clock),.write_enable(1'b1),.data(pixel_data_in), .out(regist_wire), .reset(ctrl_reset));
 			assign regist30_out = regist_wire;
 		end
+		if(c==11)
+			assign reg11 = regist_wire[17:0];
 		TriBuff32 tribuff_a(.in(regist_wire),.oe(readA_address[c]),.out(data_readRegA));
 		TriBuff32 tribuff_b(.in(regist_wire),.oe(regReadAddr2_decode_address[c]),.out(data_readRegB));
 	end

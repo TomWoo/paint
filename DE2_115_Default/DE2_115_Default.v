@@ -557,15 +557,16 @@ wire 			 [7:0]		key2_code;
 wire [31:0] pixel_pos;
 assign pixel_pos = {26'b0,scan_code};
 assign LEDG[7:0] = scan_code;//pixel_pos[17:0];
-assign LEDR[17:10] = key1_code;
+/*assign LEDR[17:10] = key1_code;
 assign LEDR[7:0] = key2_code;
 assign LEDR[9] = key1_on;
-assign LEDR[8] = key2_on;
+assign LEDR[8] = key2_on;*/
 
 // Processor
 wire[31:0] debug_data,debug_write_address_out;
 wire[31:0] data_index, read_data;
 wire ctrl_memoryWrite;
+wire [17:0] reg11;
 
 processor my_processor(.clock(VGA_CTRL_CLK),
                        .reset(1'b0),
@@ -574,8 +575,10 @@ processor my_processor(.clock(VGA_CTRL_CLK),
 							  .debug_addr(debug_write_address_out),
 							  .ctrl_memory_write_enable(ctrl_memoryWrite),
 							  .pixel_data_in(pixel_pos), // Set $r30 to 6 LSBs of key signature pattern
+							  .reg11(reg11) // TODO delete this. Views lower 17 bits of reg 11
 );
 
+assign LEDR = reg11;
 
 //	VGA Controller
 //assign VGA_BLANK_N = !cDEN;
